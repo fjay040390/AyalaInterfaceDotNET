@@ -35,9 +35,9 @@
             this.toolConfiguration = new System.Windows.Forms.ToolStripButton();
             this.toolSession = new System.Windows.Forms.ToolStripButton();
             this.toolReprocess = new System.Windows.Forms.ToolStripButton();
+            this.toolPrint = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolPrint = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -76,6 +76,7 @@
             // 
             // toolConfiguration
             // 
+            this.toolConfiguration.Enabled = false;
             this.toolConfiguration.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.toolConfiguration.Image = ((System.Drawing.Image)(resources.GetObject("toolConfiguration.Image")));
             this.toolConfiguration.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -106,6 +107,16 @@
             this.toolReprocess.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolReprocess.Click += new System.EventHandler(this.toolStripButton4_Click);
             // 
+            // toolPrint
+            // 
+            this.toolPrint.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.toolPrint.Image = ((System.Drawing.Image)(resources.GetObject("toolPrint.Image")));
+            this.toolPrint.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolPrint.Name = "toolPrint";
+            this.toolPrint.Size = new System.Drawing.Size(42, 39);
+            this.toolPrint.Text = "Print";
+            this.toolPrint.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -121,16 +132,6 @@
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(246, 17);
             this.toolStripStatusLabel1.Text = "Developed by: The Softwarehaus Corporation";
-            // 
-            // toolPrint
-            // 
-            this.toolPrint.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.toolPrint.Image = ((System.Drawing.Image)(resources.GetObject("toolPrint.Image")));
-            this.toolPrint.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolPrint.Name = "toolPrint";
-            this.toolPrint.Size = new System.Drawing.Size(42, 39);
-            this.toolPrint.Text = "Print";
-            this.toolPrint.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             // 
             // mdiMain
             // 
@@ -165,7 +166,6 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton toolPrint;
-
     }
 }
 

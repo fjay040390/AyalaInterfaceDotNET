@@ -33,3 +33,29 @@ C:\Finalized Programs\.NET APPLICATIONS\Ayala Interface dotNet\Ayala Interface d
 C:\Finalized Programs\.NET APPLICATIONS\Ayala Interface dotNet\Ayala Interface dotNet\obj\Debug\Ayala Interface dotNet.csproj.GenerateResource.Cache
 C:\Finalized Programs\.NET APPLICATIONS\Ayala Interface dotNet\Ayala Interface dotNet\obj\Debug\Ayala Interface dotNet.exe
 C:\Finalized Programs\.NET APPLICATIONS\Ayala Interface dotNet\Ayala Interface dotNet\obj\Debug\Ayala Interface dotNet.pdb
+C:\Users\FrancisJay\Documents\GitHub\AyalaInterfaceDotNET\Ayala Interface dotNet\bin\Debug\Ayala Interface dotNet.exe.config
+C:\Users\FrancisJay\Documents\GitHub\AyalaInterfaceDotNET\Ayala Interface dotNet\bin\Debug\Ayala Interface dotNet.exe
+C:\Users\FrancisJay\Documents\GitHub\AyalaInterfaceDotNET\Ayala Interface dotNet\bin\Debug\Ayala Interface dotNet.pdb
+C:\Users\FrancisJay\Documents\GitHub\AyalaInterfaceDotNET\Ayala Interface dotNet\obj\Debug\Ayala Interface dotNet.csprojResolveAssemblyReference.cache
+C:\Users\FrancisJay\Documents\GitHub\AyalaInterfaceDotNET\Ayala Interface dotNet\obj\Debug\Ayala_Interface_dotNet.frmConfig.resources
+C:\Users\FrancisJay\Documents\GitHub\AyalaInterfaceDotNET\Ayala Interface dotNet\obj\Debug\Ayala_Interface_dotNet.frmLogin.resources
+C:\Users\FrancisJay\Documents\GitHub\AyalaInterfaceDotNET\Ayala Interface dotNet\obj\Debug\Ayala_Interface_dotNet.frmPrint.resources
+C:\Users\FrancisJay\Documents\GitHub\AyalaInterfaceDotNET\Ayala Interface dotNet\obj\Debug\Ayala_Interface_dotNet.frmReprocess.resources
+C:\Users\FrancisJay\Documents\GitHub\AyalaInterfaceDotNET\Ayala Interface dotNet\obj\Debug\Ayala_Interface_dotNet.mdiMain.resources
+C:\Users\FrancisJay\Documents\GitHub\AyalaInterfaceDotNET\Ayala Interface dotNet\obj\Debug\Ayala_Interface_dotNet.Properties.Resources.resources
+C:\Users\FrancisJay\Documents\GitHub\AyalaInterfaceDotNET\Ayala Interface dotNet\obj\Debug\Ayala Interface dotNet.csproj.GenerateResource.Cache
+C:\Users\FrancisJay\Documents\GitHub\AyalaInterfaceDotNET\Ayala Interface dotNet\obj\Debug\Ayala Interface dotNet.exe
+C:\Users\FrancisJay\Documents\GitHub\AyalaInterfaceDotNET\Ayala Interface dotNet\obj\Debug\Ayala Interface dotNet.pdb
+C:\Users\FrancisJay\Desktop\Rovel\AyalaInterfaceDotNET\Ayala Interface dotNet\bin\Debug\Ayala Interface dotNet.exe.config
+C:\Users\FrancisJay\Desktop\Rovel\AyalaInterfaceDotNET\Ayala Interface dotNet\bin\Debug\Ayala Interface dotNet.exe
+C:\Users\FrancisJay\Desktop\Rovel\AyalaInterfaceDotNET\Ayala Interface dotNet\bin\Debug\Ayala Interface dotNet.pdb
+C:\Users\FrancisJay\Desktop\Rovel\AyalaInterfaceDotNET\Ayala Interface dotNet\obj\Debug\Ayala_Interface_dotNet.frmConfig.resources
+C:\Users\FrancisJay\Desktop\Rovel\AyalaInterfaceDotNET\Ayala Interface dotNet\obj\Debug\Ayala_Interface_dotNet.frmLogin.resources
+C:\Users\FrancisJay\Desktop\Rovel\AyalaInterfaceDotNET\Ayala Interface dotNet\obj\Debug\Ayala_Interface_dotNet.frmPrint.resources
+C:\Users\FrancisJay\Desktop\Rovel\AyalaInterfaceDotNET\Ayala Interface dotNet\obj\Debug\Ayala_Interface_dotNet.frmReprocess.resources
+C:\Users\FrancisJay\Desktop\Rovel\AyalaInterfaceDotNET\Ayala Interface dotNet\obj\Debug\Ayala_Interface_dotNet.mdiMain.resources
+C:\Users\FrancisJay\Desktop\Rovel\AyalaInterfaceDotNET\Ayala Interface dotNet\obj\Debug\Ayala_Interface_dotNet.Properties.Resources.resources
+C:\Users\FrancisJay\Desktop\Rovel\AyalaInterfaceDotNET\Ayala Interface dotNet\obj\Debug\Ayala Interface dotNet.csproj.GenerateResource.Cache
+C:\Users\FrancisJay\Desktop\Rovel\AyalaInterfaceDotNET\Ayala Interface dotNet\obj\Debug\Ayala Interface dotNet.exe
+C:\Users\FrancisJay\Desktop\Rovel\AyalaInterfaceDotNET\Ayala Interface dotNet\obj\Debug\Ayala Interface dotNet.pdb
+C:\Users\FrancisJay\Desktop\Rovel\AyalaInterfaceDotNET\Ayala Interface dotNet\obj\Debug\Ayala Interface dotNet.csprojResolveAssemblyReference.cache

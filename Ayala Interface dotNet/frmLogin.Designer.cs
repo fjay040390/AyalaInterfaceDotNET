@@ -28,23 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnLogin = new System.Windows.Forms.Button();
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
-            // button1
+            // btnLogin
             // 
-            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Lime;
-            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Aqua;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(33, 59);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(204, 47);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "LOGIN";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnLogin.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnLogin.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Lime;
+            this.btnLogin.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Aqua;
+            this.btnLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLogin.Location = new System.Drawing.Point(33, 59);
+            this.btnLogin.Name = "btnLogin";
+            this.btnLogin.Size = new System.Drawing.Size(204, 47);
+            this.btnLogin.TabIndex = 0;
+            this.btnLogin.Text = "LOGIN";
+            this.btnLogin.UseVisualStyleBackColor = true;
+            this.btnLogin.Click += new System.EventHandler(this.button1_Click);
             // 
             // txtPassword
             // 
@@ -59,19 +59,20 @@
             // 
             // frmLogin
             // 
-            this.AcceptButton = this.button1;
+            this.AcceptButton = this.btnLogin;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(261, 120);
             this.Controls.Add(this.txtPassword);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnLogin);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmLogin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Ayala Interface";
+            this.Load += new System.EventHandler(this.frmLogin_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -79,7 +80,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnLogin;
         private System.Windows.Forms.TextBox txtPassword;
     }
 }

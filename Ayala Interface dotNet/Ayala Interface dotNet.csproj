@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClassCon\classDBConnection.cs" />
+    <Compile Include="ClassCon\classQuery.cs" />
     <Compile Include="frmConfig.cs">
       <SubType>Form</SubType>
     </Compile>
