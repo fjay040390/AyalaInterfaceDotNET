@@ -12,22 +12,6 @@ namespace Ayala_Interface_dotNet
             InitializeComponent();
         }
 
-        private void ShowNewForm(object sender, EventArgs e)
-        {
-            Form childForm = new Form();
-            childForm.MdiParent = this;
-            childForm.Text = "Window " + childFormNumber++;
-            childForm.Show();
-        }
-
-        private void CloseAllToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            foreach (Form childForm in MdiChildren)
-            {
-                childForm.Close();
-            }
-        }
-
         private void toolExit_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -44,5 +28,19 @@ namespace Ayala_Interface_dotNet
             Form frmReprocess = new frmReprocess();
             frmReprocess.ShowDialog();
         }
-     }
+
+        private void mdiMain_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        #region "Properties"
+        
+        public Boolean isConfigUnlocked {
+            get { return this.toolConfiguration.Enabled; }
+            set { this.toolConfiguration.Enabled = value; } 
+        }
+
+        #endregion
+    }
 }

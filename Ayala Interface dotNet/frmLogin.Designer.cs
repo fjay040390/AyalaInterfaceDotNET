@@ -54,7 +54,7 @@
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(204, 31);
-            this.txtPassword.TabIndex = 1;
+            this.txtPassword.TabIndex = 0;
             this.txtPassword.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // frmLogin
