@@ -20,25 +20,29 @@ namespace Ayala_Interface_dotNet
         {
             classQuery loginConnect = new classQuery();
             loginConnect.GetLoginDetails();
-            if (txtPassword.Text == loginConnect.userPass)
-            {
-                Form mdiMain = new mdiMain();
-                mdiMain.WindowState = FormWindowState.Maximized;
-                mdiMain.Show();
-                this.Hide();
-            }
-            else if (txtPassword.Text == loginConnect.adminPass)
-            {
-                Form mdiMain = new mdiMain();
-                mdiMain.WindowState = FormWindowState.Maximized;
-                mdiMain.Show();
-                
-                this.Hide();
+            if (txtPassword.Text != "") {
+                if (txtPassword.Text == loginConnect.userPass) {
+                    mdiMain mdiMain = new mdiMain();
+                    mdiMain.WindowState = FormWindowState.Maximized;
+                    mdiMain.isConfigUnlocked = false;
+                    mdiMain.Show();
+                    this.Hide();
+                } else if (txtPassword.Text == loginConnect.adminPass) {
+                    mdiMain mdiMain = new mdiMain();
+                    mdiMain.WindowState = FormWindowState.Maximized;
+                    mdiMain.isConfigUnlocked = true;
+                    mdiMain.Show();
+                    this.Hide();
+                } else {
+                    MessageBox.Show("Access Denied!");
+                    txtPassword.Text = "";
+                    txtPassword.Focus();
+                }
             } else {
-                MessageBox.Show("Please enter you password!");
+                MessageBox.Show("Enter password!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 txtPassword.Text = "";
+                txtPassword.Focus();
             }
-   
         }
        
         private void frmLogin_Load(object sender, EventArgs e)

@@ -76,7 +76,6 @@
             // 
             // toolConfiguration
             // 
-            this.toolConfiguration.Enabled = false;
             this.toolConfiguration.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.toolConfiguration.Image = ((System.Drawing.Image)(resources.GetObject("toolConfiguration.Image")));
             this.toolConfiguration.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -147,6 +146,7 @@
             this.Name = "mdiMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Ayala Interface dotNet Version 1.0";
+            this.Load += new System.EventHandler(this.mdiMain_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
