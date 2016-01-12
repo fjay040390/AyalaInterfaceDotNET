@@ -5,8 +5,7 @@ namespace Ayala_Interface_dotNet
 {
     public partial class mdiMain : Form
     {
-        private int childFormNumber = 0;
-
+        
         public mdiMain()
         {
             InitializeComponent();

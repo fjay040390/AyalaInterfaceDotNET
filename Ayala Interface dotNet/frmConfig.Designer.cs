@@ -30,6 +30,9 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmConfig));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnBrowsePrinter = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
+            this.txtPrinterPath = new System.Windows.Forms.TextBox();
             this.dgwDiscountNonVat = new System.Windows.Forms.DataGridView();
             this.label8 = new System.Windows.Forms.Label();
             this.dgwTaxTable = new System.Windows.Forms.DataGridView();
@@ -49,9 +52,6 @@
             this.btnBrowseRM = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.browseRM = new System.Windows.Forms.FolderBrowserDialog();
-            this.label9 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.btnBrowsePrinter = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgwDiscountNonVat)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgwTaxTable)).BeginInit();
@@ -61,7 +61,7 @@
             // 
             this.groupBox1.Controls.Add(this.btnBrowsePrinter);
             this.groupBox1.Controls.Add(this.label9);
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.txtPrinterPath);
             this.groupBox1.Controls.Add(this.dgwDiscountNonVat);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.dgwTaxTable);
@@ -85,6 +85,35 @@
             this.groupBox1.Size = new System.Drawing.Size(743, 411);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
+            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // btnBrowsePrinter
+            // 
+            this.btnBrowsePrinter.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Aqua;
+            this.btnBrowsePrinter.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Lime;
+            this.btnBrowsePrinter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBrowsePrinter.Location = new System.Drawing.Point(388, 50);
+            this.btnBrowsePrinter.Name = "btnBrowsePrinter";
+            this.btnBrowsePrinter.Size = new System.Drawing.Size(75, 25);
+            this.btnBrowsePrinter.TabIndex = 20;
+            this.btnBrowsePrinter.Text = "BROWSE";
+            this.btnBrowsePrinter.UseVisualStyleBackColor = true;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(35, 58);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(65, 13);
+            this.label9.TabIndex = 19;
+            this.label9.Text = "Printer Path:";
+            // 
+            // txtPrinterPath
+            // 
+            this.txtPrinterPath.Location = new System.Drawing.Point(109, 53);
+            this.txtPrinterPath.Name = "txtPrinterPath";
+            this.txtPrinterPath.Size = new System.Drawing.Size(273, 20);
+            this.txtPrinterPath.TabIndex = 18;
             // 
             // dgwDiscountNonVat
             // 
@@ -112,6 +141,7 @@
             this.dgwTaxTable.Name = "dgwTaxTable";
             this.dgwTaxTable.Size = new System.Drawing.Size(273, 235);
             this.dgwTaxTable.TabIndex = 15;
+            this.dgwTaxTable.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgwTaxTable_CellContentClick);
             // 
             // label7
             // 
@@ -203,7 +233,7 @@
             // 
             // txtTenantCode
             // 
-            this.txtTenantCode.Location = new System.Drawing.Point(109, 79);
+            this.txtTenantCode.Location = new System.Drawing.Point(109, 80);
             this.txtTenantCode.Name = "txtTenantCode";
             this.txtTenantCode.Size = new System.Drawing.Size(273, 20);
             this.txtTenantCode.TabIndex = 4;
@@ -248,34 +278,7 @@
             this.btnSave.TabIndex = 0;
             this.btnSave.Text = "&SAVE";
             this.btnSave.UseVisualStyleBackColor = true;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(35, 58);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(65, 13);
-            this.label9.TabIndex = 19;
-            this.label9.Text = "Printer Path:";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(109, 53);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(273, 20);
-            this.textBox1.TabIndex = 18;
-            // 
-            // btnBrowsePrinter
-            // 
-            this.btnBrowsePrinter.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Aqua;
-            this.btnBrowsePrinter.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Lime;
-            this.btnBrowsePrinter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBrowsePrinter.Location = new System.Drawing.Point(388, 50);
-            this.btnBrowsePrinter.Name = "btnBrowsePrinter";
-            this.btnBrowsePrinter.Size = new System.Drawing.Size(75, 25);
-            this.btnBrowsePrinter.TabIndex = 20;
-            this.btnBrowsePrinter.Text = "BROWSE";
-            this.btnBrowsePrinter.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // frmConfig
             // 
@@ -326,6 +329,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button btnBrowsePrinter;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtPrinterPath;
     }
 }
