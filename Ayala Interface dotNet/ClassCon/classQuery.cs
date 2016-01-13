@@ -4,6 +4,7 @@ namespace Ayala_Interface_dotNet.ClassCon
 {
     public class classQuery : classDBConnection
     {
+        #region "Properties"
         public string userPass { get; set; }
         public string adminPass { get; set; }
         public string pathRM { get; set; }
@@ -12,35 +13,33 @@ namespace Ayala_Interface_dotNet.ClassCon
         public string tenantCode { get; set; }
         public string tenantContract { get; set; }
                 
-        public DataTable dt { get; set; }
-
+        public DataTable dtTax { get; set; }
+        public DataTable dtDiscount { get; set; }
+        #endregion
         public classQuery()
         {
             
         }
-        
+        #region "Queries Command"
         //get loginDetailsForLoginForm
         public void GetLoginDetails()
         {
             //SELECT query for login//fire query
             Queries("Select userPassword,adminPassword FROM tblLogin");
             //rdr.Read();
-            if (rdr.HasRows)
-            {
+            if (rdr.HasRows) {
                 //read data from database
-                while (rdr.Read())
-                {
+                while (rdr.Read()) {
                     userPass = rdr.GetValue(0).ToString();
                     adminPass = rdr.GetValue(1).ToString();                    
                 }
-
             }
         }
 
         //loadData for Config RMpath,PrinterPath,user and admin pass
         public void LoadLoginData()
         {
-            Queries("Select userPassword,adminPassword,rmPath,printerPath,tenantCode,tenantName,tenantContract FROM tblLogin");
+            Queries("Select * FROM tblLogin");
             if (rdr.HasRows) {
                 while (rdr.Read()) {
                     userPass = rdr.GetValue(0).ToString();
@@ -56,27 +55,30 @@ namespace Ayala_Interface_dotNet.ClassCon
        
         //loadtaxmap
         public void LoadTaxMap() {
-            datagridQuery("SELECT * FROM tblTaxMapping");
-            dt = new DataTable();
-            da.Fill(dt);
+            LoadDataGridViewTax("SELECT TaxTitle,TaxMap,TaxPLU FROM tblTaxMapping");
+            dtTax = new DataTable();
+            daTax.Fill(dtTax);
         }
+    
         //loadRMDiscount
-        public void LoadDiscount()
-        {
-            datagridQuery("SELECT * FROM tblRMDiscount");
-            dt = new DataTable();
-            da.Fill(dt);
+        public void LoadDiscount() {
+            LoadDataGridViewDiscount("SELECT DscMap, DscPLU FROM tblRMDiscount");
+            dtDiscount = new DataTable();
+            daDiscount.Fill(dtDiscount);
         }
 
-        //SaveData
-       /* public void SaveData()
+        //save to mdb
+        public void UpdateConfig(string dbParameter, OleDbType dbFieldType, int dbSize, string dbField, string dbValue)
         {
+            //Open Connection
             openConnection();
-            Queries("UPDATE tblLogin SET userPassword = '" + userPass + "' ");
-            cmd.Parameters.Add("@userPassword", OleDbType.Integer, 6).Value = userPass;
-         
-        }*/
-
+            //Fire Query
+            cmd = new OleDbCommand("UPDATE tblLogin SET " + dbField + " = " + dbParameter, con);
+            cmd.Parameters.Add(dbParameter, dbFieldType, dbSize, dbField).Value = dbValue;
+            cmd.ExecuteNonQuery();
+        }  
+      
+        #endregion
 
     }
 }

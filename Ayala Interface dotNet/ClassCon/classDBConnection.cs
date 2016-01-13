@@ -15,10 +15,14 @@ namespace Ayala_Interface_dotNet.ClassCon
          public OleDbConnection con;
          public OleDbCommand cmd;
          public OleDbDataReader rdr;
-         public OleDbDataAdapter da;
+         public OleDbDataAdapter daTax;
+         public OleDbDataAdapter daDiscount;
+         public OleDbCommandBuilder cmdb;
+
          public string mdbPath;
          public string rmPath;
 
+         #region "Connection Routine"
          //database connection string
          public classDBConnection()
          {
@@ -62,7 +66,10 @@ namespace Ayala_Interface_dotNet.ClassCon
                  con.Close();
              }
          }
+ #endregion
 
+         #region "Queries Routine"
+        
          //execute query
          public void Queries(string sql)
          {
@@ -74,12 +81,22 @@ namespace Ayala_Interface_dotNet.ClassCon
          }
 
          //execute datagridview query
-         public void datagridQuery(string sql)
+         public void LoadDataGridViewTax(string sql)
          {
+             daTax = new OleDbDataAdapter();
              openConnection();
-             da = new OleDbDataAdapter(sql, con);
+             daTax = new OleDbDataAdapter(sql, con);
          }
-         
+
+         public void LoadDataGridViewDiscount(string sql)
+         {
+             daDiscount = new OleDbDataAdapter();
+             openConnection();
+             daDiscount = new OleDbDataAdapter(sql, con);
+         }
+         //update datagridview
+
+        #endregion
       }
 
 }
