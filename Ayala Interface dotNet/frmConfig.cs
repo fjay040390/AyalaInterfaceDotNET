@@ -7,6 +7,8 @@ namespace Ayala_Interface_dotNet
 {
     public partial class frmConfig : Form
     {
+        classQuery classQuery = new classQuery();
+
         public frmConfig()
         {
             InitializeComponent();
@@ -14,24 +16,23 @@ namespace Ayala_Interface_dotNet
 
         private void frmConfig_Load(object sender, EventArgs e)
         {
-            classQuery loadData = new classQuery();
            //loadData
-            loadData.LoadLoginData();
-            txtAdminPass.Text = loadData.adminPass;
-            txtUserPass.Text = loadData.userPass;
-            txtRMPath.Text = loadData.pathRM;
-            txtPrinterPath.Text = loadData.printerPath;
-            txtTenantCode.Text = loadData.tenantCode;
-            txtTenantName.Text = loadData.tenantName;
-            txtContractNumber.Text = loadData.tenantContract;
+            classQuery.LoadLoginData();
+            txtAdminPass.Text = classQuery.adminPass;
+            txtUserPass.Text = classQuery.userPass;
+            txtRMPath.Text = classQuery.pathRM;
+            txtPrinterPath.Text = classQuery.printerPath;
+            txtTenantCode.Text = classQuery.tenantCode;
+            txtTenantName.Text = classQuery.tenantName;
+            txtContractNumber.Text = classQuery.tenantContract;
 
-            loadData.LoadTaxMap();
-            dgwTaxTable.DataSource = loadData.dt;
-            loadData.dt.Dispose();
+            classQuery.LoadTaxMap();
+            dgwTaxTable.DataSource = classQuery.dtTax;
+            classQuery.dtTax.Dispose();
 
-            loadData.LoadDiscount();
-            dgwDiscountNonVat.DataSource = loadData.dt;
-            loadData.dt.Dispose();
+            classQuery.LoadDiscount();
+            dgwDiscountNonVat.DataSource = classQuery.dtDiscount;
+            classQuery.dtTax.Dispose();
         }
 
         private void btnBrowseRM_Click(object sender, EventArgs e)
@@ -40,27 +41,38 @@ namespace Ayala_Interface_dotNet
             browseRM.ShowDialog();
             if (browseRM.SelectedPath != null) {
                 txtRMPath.Text = browseRM.SelectedPath.ToString();
-            }
-               
+            }     
         }
-
-        private void dgwTaxTable_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-           
-        }
-
+       
         private void btnSave_Click(object sender, EventArgs e)
         {
-            /*classQuery saveData = new classQuery();
-            saveData.SaveData();
-            txtUserPass.Text = saveData.userPass;
-            */
-
+            classQuery.UpdateConfig("@userPass", OleDbType.Integer, 4, "userPassword", txtUserPass.Text);
+            classQuery.UpdateConfig("@adminPass", OleDbType.Integer, 4, "adminPassword", txtAdminPass.Text);
+            classQuery.UpdateConfig("@rmPath", OleDbType.Char, 100, "rmPath", txtRMPath.Text);
+            classQuery.UpdateConfig("@printerPath", OleDbType.Char, 100, "printerPath", txtPrinterPath.Text);
+            classQuery.UpdateConfig("@tenantCode", OleDbType.Char, 3, "tenantCode", txtTenantCode.Text);
+            classQuery.UpdateConfig("@tenantName", OleDbType.Char, 10, "tenantName", txtTenantName.Text);
+            classQuery.UpdateConfig("@tenantContract", OleDbType.Char, 100, "tenantContract", txtContractNumber.Text);
+            
+            //save DataGridViewTax
+            OleDbCommandBuilder cmdBuild;
+            cmdBuild = new OleDbCommandBuilder(classQuery.daTax);
+            classQuery.daTax.Update(classQuery.dtTax);
+            //save DataGridViewDiscount
+            cmdBuild = new OleDbCommandBuilder(classQuery.daDiscount);
+            classQuery.daDiscount.Update(classQuery.dtDiscount);
+            MessageBox.Show("Update successful!");
+            this.Dispose();
         }
 
-        private void groupBox1_Enter(object sender, EventArgs e)
+        private void btnBrowsePrinter_Click(object sender, EventArgs e)
         {
-
+            FolderBrowserDialog browseRM = new FolderBrowserDialog();
+            browseRM.ShowDialog();
+            if (browseRM.SelectedPath != null) {
+                txtPrinterPath.Text = browseRM.SelectedPath.ToString();
+            }     
         }
+
     }
 }
