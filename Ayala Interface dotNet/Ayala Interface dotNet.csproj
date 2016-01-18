@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="ClassCon\classDBConnection.cs" />
     <Compile Include="ClassCon\classQuery.cs" />
+    <Compile Include="ClassCon\classReprocess.cs" />
     <Compile Include="frmConfig.cs">
       <SubType>Form</SubType>
     </Compile>
