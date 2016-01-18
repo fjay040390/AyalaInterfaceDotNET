@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data;
+using Ayala_Interface_dotNet.ClassCon;
 
 namespace Ayala_Interface_dotNet
 {
     public partial class frmReprocess : Form
     {
+        classReprocess classReprocess = new classReprocess();
+
         public frmReprocess()
         {
             InitializeComponent();
@@ -19,7 +16,17 @@ namespace Ayala_Interface_dotNet
 
         private void btnReprocess_Click(object sender, EventArgs e)
         {
+            classReprocess.dateStart = lblStart.Text;
+            classReprocess.dateEnd = lblEnd.Text;
+            MessageBox.Show(classReprocess.rmPath);
+            classReprocess.FilterDate();
+        }
 
+        private void frmReprocess_Load(object sender, EventArgs e)
+        {
+            classReprocess.LoadRmPath();
+           
+            
         }
 
         private void monthStart_DateChanged(object sender, DateRangeEventArgs e)
@@ -32,10 +39,11 @@ namespace Ayala_Interface_dotNet
             lblEnd.Text = monthEnd.SelectionStart.ToShortDateString();
         }
 
-        private void frmReprocess_Load(object sender, EventArgs e)
+        private void groupBox1_Enter(object sender, EventArgs e)
         {
 
         }
+
 
     }
 }

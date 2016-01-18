@@ -14,6 +14,7 @@ namespace Ayala_Interface_dotNet
             InitializeComponent();
         }
 
+        #region "Load Data to Config"
         private void frmConfig_Load(object sender, EventArgs e)
         {
            //loadData
@@ -35,20 +36,15 @@ namespace Ayala_Interface_dotNet
             classQuery.dtTax.Dispose();
         }
 
-        private void btnBrowseRM_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog browseRM = new FolderBrowserDialog();
-            browseRM.ShowDialog();
-            if (browseRM.SelectedPath != null) {
-                txtRMPath.Text = browseRM.SelectedPath.ToString();
-            }     
-        }
-       
+        #endregion
+
+        #region "Saving data to database"
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             classQuery.UpdateConfig("@userPass", OleDbType.Integer, 4, "userPassword", txtUserPass.Text);
             classQuery.UpdateConfig("@adminPass", OleDbType.Integer, 4, "adminPassword", txtAdminPass.Text);
-            classQuery.UpdateConfig("@rmPath", OleDbType.Char, 100, "rmPath", txtRMPath.Text);
+            classQuery.UpdateConfig("@pathRM", OleDbType.Char, 100, "RMPath", txtRMPath.Text);
             classQuery.UpdateConfig("@printerPath", OleDbType.Char, 100, "printerPath", txtPrinterPath.Text);
             classQuery.UpdateConfig("@tenantCode", OleDbType.Char, 3, "tenantCode", txtTenantCode.Text);
             classQuery.UpdateConfig("@tenantName", OleDbType.Char, 10, "tenantName", txtTenantName.Text);
@@ -63,6 +59,20 @@ namespace Ayala_Interface_dotNet
             classQuery.daDiscount.Update(classQuery.dtDiscount);
             MessageBox.Show("Update successful!");
             this.Dispose();
+            MessageBox.Show(classQuery.rmPath);
+        }
+
+#endregion
+
+        #region "BrowserFolderDialog"
+        private void btnBrowseRM_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog browseRM = new FolderBrowserDialog();
+            browseRM.ShowDialog();
+            if (browseRM.SelectedPath != null)
+            {
+                txtRMPath.Text = browseRM.SelectedPath.ToString();
+            }
         }
 
         private void btnBrowsePrinter_Click(object sender, EventArgs e)
@@ -71,8 +81,16 @@ namespace Ayala_Interface_dotNet
             browseRM.ShowDialog();
             if (browseRM.SelectedPath != null) {
                 txtPrinterPath.Text = browseRM.SelectedPath.ToString();
-            }     
+            }
         }
+        #endregion  
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+      
 
     }
 }
