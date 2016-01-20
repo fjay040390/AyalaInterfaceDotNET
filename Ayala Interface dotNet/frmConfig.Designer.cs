@@ -98,6 +98,7 @@
             this.btnBrowsePrinter.TabIndex = 20;
             this.btnBrowsePrinter.Text = "BROWSE";
             this.btnBrowsePrinter.UseVisualStyleBackColor = true;
+            this.btnBrowsePrinter.Click += new System.EventHandler(this.btnBrowsePrinter_Click);
             // 
             // label9
             // 
@@ -111,6 +112,7 @@
             // txtPrinterPath
             // 
             this.txtPrinterPath.Location = new System.Drawing.Point(109, 53);
+            this.txtPrinterPath.MaxLength = 100;
             this.txtPrinterPath.Name = "txtPrinterPath";
             this.txtPrinterPath.Size = new System.Drawing.Size(273, 20);
             this.txtPrinterPath.TabIndex = 18;
@@ -141,7 +143,6 @@
             this.dgwTaxTable.Name = "dgwTaxTable";
             this.dgwTaxTable.Size = new System.Drawing.Size(273, 235);
             this.dgwTaxTable.TabIndex = 15;
-            this.dgwTaxTable.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgwTaxTable_CellContentClick);
             // 
             // label7
             // 
@@ -164,6 +165,7 @@
             // txtContractNumber
             // 
             this.txtContractNumber.Location = new System.Drawing.Point(109, 131);
+            this.txtContractNumber.MaxLength = 100;
             this.txtContractNumber.Name = "txtContractNumber";
             this.txtContractNumber.Size = new System.Drawing.Size(273, 20);
             this.txtContractNumber.TabIndex = 12;
@@ -218,6 +220,7 @@
             // txtTenantName
             // 
             this.txtTenantName.Location = new System.Drawing.Point(109, 105);
+            this.txtTenantName.MaxLength = 10;
             this.txtTenantName.Name = "txtTenantName";
             this.txtTenantName.Size = new System.Drawing.Size(273, 20);
             this.txtTenantName.TabIndex = 6;
@@ -234,6 +237,7 @@
             // txtTenantCode
             // 
             this.txtTenantCode.Location = new System.Drawing.Point(109, 80);
+            this.txtTenantCode.MaxLength = 3;
             this.txtTenantCode.Name = "txtTenantCode";
             this.txtTenantCode.Size = new System.Drawing.Size(273, 20);
             this.txtTenantCode.TabIndex = 4;
@@ -250,6 +254,7 @@
             // txtRMPath
             // 
             this.txtRMPath.Location = new System.Drawing.Point(109, 24);
+            this.txtRMPath.MaxLength = 100;
             this.txtRMPath.Name = "txtRMPath";
             this.txtRMPath.Size = new System.Drawing.Size(273, 20);
             this.txtRMPath.TabIndex = 2;
@@ -295,7 +300,6 @@
             this.Name = "frmConfig";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Interface Setup";
-            this.TopMost = true;
             this.Load += new System.EventHandler(this.frmConfig_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

@@ -1,38 +1,65 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data;
 using System.Data.OleDb;
+using System.Configuration;
+
 
 namespace Ayala_Interface_dotNet.ClassCon
 {
     
-     public class classDBConnection
-      {
+     public class classDBConnection 
+     {
+         #region "Declaration
 
          public OleDbConnection con;
+         public OleDbConnection rmCon;
+         public OleDbConnection tempCon;
          public OleDbCommand cmd;
          public OleDbDataReader rdr;
-         public OleDbDataAdapter da;
+         public OleDbDataAdapter daTax;
+         public OleDbDataAdapter daDiscount;
+         public OleDbCommandBuilder cmdb;
+         
+         public string rmPath { get; set; }
          public string mdbPath;
-         public string rmPath;
+         public string tempPath;
+        
+         #endregion
+
+         #region "Connection Routine"
 
          //database connection string
          public classDBConnection()
          {
              mdbPath = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|dbLogin.accdb";
-             rmPath = "Provider=Microsoft.Jet.OleDB.4.0;Data Source= " + rmPath + "; Extended Properties=dBase IV;User ID=Admin;Password=;";
          }
                
          //Open MDBConnection
-         public void openConnection ()
+         public void openConnection()
          {
-             con = new OleDbConnection(mdbPath);
-             if (con.State == ConnectionState.Closed) 
-             {
+            con = new OleDbConnection(mdbPath);          
+             if (con.State == ConnectionState.Closed) {
                  con.Open();
+             }
+         }
+
+         public void rmConnect()
+         {
+             rmPath = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + rmPath + ";Extended Properties=dBASE IV;User ID=Admin;Password=;";
+             rmCon = new OleDbConnection(rmPath);
+             if (rmCon.State == ConnectionState.Closed)
+             {
+                 rmCon.Open();
+             }
+         }
+
+         public void TemplateConnection()
+         {
+             tempPath = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=|DataDirectory|Template;Extended Properties=dBASE IV;User ID=Admin;Password=;";
+             tempCon = new OleDbConnection(tempPath);
+             if (tempCon.State == ConnectionState.Closed)
+             {
+                 tempCon.Open();
              }
          }
 
@@ -45,25 +72,18 @@ namespace Ayala_Interface_dotNet.ClassCon
              }
          }
 
-         //Open RMPathConnection
-         public void openRMPathConnection() 
+         public void closeRMConnect() 
          {
-             con = new OleDbConnection(rmPath);
-             if (con.State == ConnectionState.Closed) {
-                 con.Open();
+             if (rmCon.State == ConnectionState.Open) {
+                 rmCon.Close();
              }
          }
+ 
+         #endregion
 
-         //Close RMPathConnection
-         public void closeRMPathConnection()
-         {
-             con = new OleDbConnection(rmPath);
-             if (con.State == ConnectionState.Open) {
-                 con.Close();
-             }
-         }
-
-         //execute query
+         #region "Queries Routine"
+        
+         //execute mDB query
          public void Queries(string sql)
          {
              //Open Connection
@@ -73,13 +93,37 @@ namespace Ayala_Interface_dotNet.ClassCon
              rdr = cmd.ExecuteReader();
          }
 
-         //execute datagridview query
-         public void datagridQuery(string sql)
+         public void RMQueries(string sql)
          {
-             openConnection();
-             da = new OleDbDataAdapter(sql, con);
+             //Fire Query
+             cmd = new OleDbCommand(sql, rmCon);
+             rdr = cmd.ExecuteReader();
+             rdr.Read();
          }
-         
-      }
+  
+         //execute datagridview query
+         public void LoadDataGridViewTax(string sql)
+         {
+             daTax = new OleDbDataAdapter();
+             openConnection();
+             daTax = new OleDbDataAdapter(sql, con);
+         }
+         public void LoadDataGridViewDiscount(string sql)
+         {
+             daDiscount = new OleDbDataAdapter();
+             openConnection();
+             daDiscount = new OleDbDataAdapter(sql, con);
+         }
+
+         //execute computation to dbf query
+         public void DBFQuery (string sql)
+         {
+             cmd = new OleDbCommand(sql, tempCon);
+             cmd.ExecuteReader();
+             
+         }
+        #endregion
+              
+     }
 
 }

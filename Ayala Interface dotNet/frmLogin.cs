@@ -38,16 +38,12 @@ namespace Ayala_Interface_dotNet
                     txtPassword.Text = "";
                     txtPassword.Focus();
                 }
-            } else {
-                MessageBox.Show("Enter password!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                txtPassword.Text = "";
-                txtPassword.Focus();
+                } else {
+                    MessageBox.Show("Enter password!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    txtPassword.Text = "";
+                    txtPassword.Focus();
             }
         }
-       
-        private void frmLogin_Load(object sender, EventArgs e)
-        {
 
-        }
     }
 }
