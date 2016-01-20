@@ -31,6 +31,9 @@ namespace Ayala_Interface_dotNet.ClassCon
         public string dbTotalSales { get; set; }
         public string dbTotalVat { get; set; }
         public string dbTotalTransaction { get; set; }
+        public string dbTotalCANREF { get; set; }
+        public string dbTotalOldGT { get; set; }
+        public string dbTotalDisc { get; set; }
 
         public int TotalRawGross { get; set; }
         public int taxSTR { get; set; }
@@ -83,7 +86,7 @@ namespace Ayala_Interface_dotNet.ClassCon
         //Save data from query REP
         public void SaveFilterDate(string str_date, string bill_start, string bill_end)
         {
-            Queries("INSERT INTO tblFilterDate VALUES ('" + str_date + "','" + bill_start + "','" + bill_end + "','" + repMonth + "','" + repYear + "')");
+            Queries("INSERT INTO tblFilterDate VALUES ('" + str_date + "'," + bill_start + "," + bill_end + ",'" + repMonth + "','" + repYear + "')");
         }
 
         #endregion
@@ -110,12 +113,11 @@ namespace Ayala_Interface_dotNet.ClassCon
             dbNoTaxSales = rdr.GetValue(0).ToString();
         }
 
-   /*    public void GetLocalTax(int strTerminal)
+        public void GetLocalTax(int strTerminal)
        { 
-           RMQueries = "SELECT Sum(b.Tax_Amt) FROM SLS" + repMonth + repYear + ".DBF LEFT a JOIN TAX"+ repMonth + repYear + " b ON a.Bill_no = b.Bill_no WHERE a.Session_No = "+sessNo+" AND b.Tax_no NOT IN(" + STRNOTAXPLU + ") AND settle_stn = " + strTerminal);
+        //   RMQueries = "SELECT Sum(b.Tax_Amt) FROM SLS" + repMonth + repYear + ".DBF LEFT a JOIN TAX"+ repMonth + repYear + " b ON a.Bill_no = b.Bill_no WHERE a.Session_No = "+sessNo+" AND b.Tax_no NOT IN(" + STRNOTAXPLU + ") AND settle_stn = " + strTerminal);
            dbLocalTax = rdr.GetValue(0).ToString();
        }
-    */
 
         public void GetTotalOthers(int strTerminal)
         {
@@ -131,16 +133,27 @@ namespace Ayala_Interface_dotNet.ClassCon
             
         public void GetTotalVat(int strTerminal)
         {
-            RMQueries("SELECT SUM(Tax_Amt) FROM SLS" + repMonth + repYear + ".DBF LEFT JOIN TAX" + repMonth + repYear + " ON Bill_No = Bill_No WHERE Pay_Type <> 5 AND  Session_no = " + sessNo + " AND Tax_No = " + taxSTR  + " OR Tax_No = " + taxSTR + " AND Settle_stn =" + strTerminal);
+            RMQueries("SELECT SUM(Tax_Amt) FROM SLS" + repMonth + repYear + ".DBF LEFT JOIN TAX" + repMonth + repYear + " ON Bill_No = Bill_No WHERE Pay_Type <> 5 AND  Session_no = " + sessNo + " AND Tax_No = " + taxSTR + " OR Tax_No = " + taxSTR + " AND Settle_stn =" + strTerminal);
             dbTotalVat = rdr.GetValue(0).ToString();
         }
 
         public void GetTotalTransaction(int strTerminal)
         {
-            RMQueries("SELECT count(*) FROM  SLS" + repMonth + repYear + ".DBF WHERE Session_no = " + sessNo);
-            dbTotalTransaction = rdr.GetValue(0).ToString();
+            RMQueries("select count(*) as TotalCnt FROM SLS"  + repMonth + repYear + ".DBF WHERE Session_No = " + sessNo);
+              
         }
 
+        public void GetTotalCANREF(int strTerminal)
+        { 
+            RMQueries("SELECT SUM(TOTAL) FROM SLS" + repMonth + repYear + ".DBF WHERE Session_No = "+ sessNo +" AND Pay_type = 5 AND Settle_stn ="+strTerminal);
+            dbTotalCANREF = rdr.GetValue(0).ToString(); 
+        }
+
+        public void GetOldGrandTotal(int strTerminal)
+        {
+            RMQueries("SELECT TOP 2 GTAmount, Session_No FROM RMGTValues WHERE Session_No <= " + sessNo + " AND TerminalID = '" + strTerminal + "' ORDER BY Session_NO DESC");
+            dbTotalOldGT = rdr.GetValue(0).ToString();
+        }
         #endregion
 
         #region "Save Computation to DBF"
@@ -149,13 +162,13 @@ namespace Ayala_Interface_dotNet.ClassCon
         {
            DBFQuery("INSERT INTO day.dbf VALUES (" + ServiceCharge + ")");
         }
+
+        public void GetTaxStr(int taxSTR)
+        { 
+        Queries("SELECT TaxMap FROM tblTaxMapping WHERE TaxMap = "+taxSTR+" OR TaxMap = "+taxSTR+" ");
+        }
         
         #endregion
-
-        public void taxNo(int taxNo)
-        { 
-            Queries("SELECT tblTaxMapping WHERE TaxMap = "+taxNo+" ");
-        }
 
     }
 }
