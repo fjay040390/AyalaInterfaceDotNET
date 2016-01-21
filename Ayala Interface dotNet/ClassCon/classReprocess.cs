@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.OleDb;
 using System.Configuration;
+using System.Windows.Forms;
 
 namespace Ayala_Interface_dotNet.ClassCon
 {
@@ -65,10 +66,10 @@ namespace Ayala_Interface_dotNet.ClassCon
             LoadConfigDetails();
             LoadDiscount();
             LoadTaxMap();
+            LoadLessVAT();
             GetTaxTableConfig();
             GetLessVatConfig();
             rmConnect();
-            TemplateConnection();
         }
 
         #region "Save Filter"
@@ -81,12 +82,18 @@ namespace Ayala_Interface_dotNet.ClassCon
             endDate = Convert.ToDateTime(dateEnd);
             strDate = Convert.ToDateTime(dateStart);
             do {
+                //2016 = 16
                 repYear = strDate.ToString("yy");
+                //January = 01
                 repMonth = strDate.ToString("MM");
+                //GetSession
                 GetSessionNo();
-                //SaveFilterDate(sessNo, bill_start, bill_end);
+                //Get Sales
                 ComputeDailySales(1);
-
+                //Write to file
+                //classWriteFile writeFile = new classWriteFile();
+                //writeFile.GenerateFile();
+                //Add 1 day to loop
                 strDate = strDate.AddDays(1);
             } while (strDate <= endDate);
         }
@@ -136,14 +143,28 @@ namespace Ayala_Interface_dotNet.ClassCon
         //Load LESSVAT table Config
         public void GetLessVatConfig() 
         {
-            if (dtLessVAT.Rows.Count >= 0){
-               DataColumn dscPLU = dtLessVAT.Columns["DscPLU"];
-               foreach (DataRow col in dtLessVAT.Columns) {
-               strDscVat = col[dscPLU].ToString();        
-               }
+            if (dtLessVAT.Rows.Count > 0) 
+            {
+                DataColumn col = dtLessVAT.Columns["PLU"];
+                foreach (DataRow row in dtLessVAT.Rows) {
+                    strDscVat = strDscVat + row[col].ToString() + ",";
+                }
+                strDscVat = strDscVat.Remove(strDscVat.Length - 1);
             }
         }
 
+        //To check if data from database is empty, return 0. 
+        public double ReturnData(string param)
+        {
+            if (param != "")
+            {
+                return Convert.ToDouble(param);
+            }
+            else
+            {
+                return 0.0;
+            }
+        }
         #endregion
 
         #region "Computation"
@@ -157,52 +178,48 @@ namespace Ayala_Interface_dotNet.ClassCon
             //transaction Date
             dbDateStart = dateStart;
 
-            //OldGrantTotal
-            //RMQueries("SELECT TOP 2 GTAmount, Session_No FROM RMGTValues WHERE Session_No <= " + sessNo + " AND TerminalID = '" + strTerminal + "' ORDER BY Session_NO DESC");
-            //dbTotalOldGT = rdr.GetValue(0).ToString();
-
             //TotalVat
             RMQueries("SELECT SUM(a.Tax_Amt) FROM TAX" + repMonth + repYear + ".DBF a LEFT JOIN SLS" + repMonth + repYear + " b ON b.Bill_No = a.Bill_No WHERE b.Pay_Type <> 5 AND  b.Session_no = " + sessNo + " AND a.Tax_No = " + primaryVAT + " OR a.Tax_No = " + secondaryVAT + " AND b.Settle_stn =" + strTerminal);
-            dbTotalVat = rdr.GetDouble(0);
+            dbTotalVat = ReturnData(rdr[0].ToString());
 
             //Total Discount
             //CHECK
-            RMQueries("SELECT Sum(a.Discount) as TotalPercentCheck FROM SLS" + repMonth + repYear + ".DBF a WHERE a.Session_No = " + sessNo + " AND a.pay_type <> 5 AND a.settle_stn=" + strTerminal);
-            dbTotalPercentCheck = rdr.GetDouble(0);
+            RMQueries("SELECT Sum(a.Discount) as TotalPercentCheck FROM SLS" + repMonth + repYear + ".DBF a WHERE a.Session_No = " + sessNo + " AND a.pay_type <> 5 AND a.disc_type NOT IN (" + strDscVat + ")  AND a.settle_stn=" + strTerminal);
+            dbTotalPercentCheck = ReturnData(rdr[0].ToString()); 
             //ITEM
             RMQueries("SELECT SUM(ABS(ITEM_ADJ) * QUANTY) AS TotalPercentItem FROM SDET" + repMonth + repYear + " LEFT JOIN SLS" + repMonth + repYear + " a ON Bill_No = Bill_No WHERE pay_type <> 5 and Session_No = " + sessNo + " AND DISC_NO NOT IN(" + strDscVat + ") and settle_stn =" + strTerminal);
-            dbTotalPercentItem = rdr.GetDouble(0);
-
+            dbTotalPercentItem = ReturnData(rdr[0].ToString());
             //Total Discounts
             dbTotalDiscount = dbTotalPercentItem + dbTotalPercentCheck;
 
             //totalCanRef
             RMQueries("SELECT SUM(TOTAL) FROM SLS" + repMonth + repYear + ".DBF WHERE Session_No = " + sessNo + " AND Pay_type = 5 AND Settle_stn =" + strTerminal);
-            dbTotalCANREF = rdr.GetDouble(0); 
-
+            dbTotalCANREF = ReturnData(rdr[0].ToString());
+                                   
             //getServiceCharge
             //Auto Grat
             RMQueries("SELECT sum(auto_grat) from SLS" + repMonth + repYear + ".DBF WHERE Session_No = " + sessNo);
-            dbServiceCharge = rdr.GetDouble(0);
+            dbServiceCharge = ReturnData(rdr[0].ToString());
+
             //Tax table
             RMQueries("SELECT SUM(a.Tax_Amt) FROM TAX" + repMonth + repYear + ".DBF a LEFT JOIN SLS" + repMonth + repYear + " b ON b.Bill_No = a.Bill_No WHERE b.Pay_Type <> 5 AND  b.Session_no = " + sessNo + " AND a.Tax_No = " + primarySC + " OR a.Tax_No = " + secondarySC + " AND b.Settle_stn =" + strTerminal);
-            dbServiceCharge = dbServiceCharge + rdr.GetDouble(0);
+            dbServiceCharge = dbServiceCharge + ReturnData(rdr[0].ToString()); 
 
             //Total Sales
             RMQueries("SELECT Sum(Total) FROM SLS" + repMonth + repYear + ".DBF WHERE Session_No = " + sessNo + " AND pay_type <> 5 AND Settle_stn = " + strTerminal);
-            dbTotalSales = rdr.GetDouble(0);
+            dbTotalSales = ReturnData(rdr[0].ToString());
 
             //getNoTaxSales
             RMQueries("SELECT Sum(Total) FROM SLS" + repMonth + repYear + ".DBF WHERE Session_No = " + sessNo + " AND pay_type <> 5 AND Settle_stn = " + strTerminal + " AND NOT Taxable");
-            dbNoTaxSales = rdr.GetDouble(0);
+            dbNoTaxSales = ReturnData(rdr[0].ToString());
 
             //GetLocalTax
             RMQueries("SELECT SUM(a.Tax_Amt) FROM TAX" + repMonth + repYear + ".DBF a LEFT JOIN SLS" + repMonth + repYear + " b ON b.Bill_No = a.Bill_No WHERE b.Pay_Type <> 5 AND  b.Session_no = " + sessNo + " AND a.Tax_No = " + primaryOthers1 + " OR a.Tax_No = " + secondaryOthers1 + " AND b.Settle_stn =" + strTerminal);
-            dbLocalTax = rdr.GetDouble(0);
+            dbLocalTax = ReturnData(rdr[0].ToString());
 
             //getTotalOthers
             RMQueries("SELECT SUM(People_no) FROM SLS" + repMonth + repYear + ".DBF WHERE Session_no = " + sessNo + " AND Pay_type <> 5 and Settle_stn = " + strTerminal);
-            dbTotalOthers = rdr.GetDouble(0);
+            dbTotalOthers = ReturnData(rdr[0].ToString());
 
             //getTotalTransaction
             dbTotalTransaction = (int.Parse(bill_end) - int.Parse(bill_start)) + 1;
@@ -213,12 +230,15 @@ namespace Ayala_Interface_dotNet.ClassCon
             //Total Daily Sales
             dbTotalDlySales = dbTotalRawGross - dbTotalDiscount - dbTotalCANREF - dbServiceCharge - dbTotalVat;
 
-            //Old GT
-             
-            //New GT
+            //Old Grand Total
+            Queries("SELECT TOP 1 GTAmount as GTAmnt FROM tblGTValues WHERE SessionNo <= " + sessNo + " AND TerminalID = '" + strTerminal + "' ORDER BY SessionNO DESC");
+            dbOldGT = Convert.ToDouble(rdr["GTAmnt"].ToString());
+                                     
+            //New Grand Total
             dbNewGT = dbOldGT + dbTotalDlySales + dbTotalVat;
         }
-         #endregion
+
+        #endregion
 
     }
 }

@@ -26,6 +26,7 @@ namespace Ayala_Interface_dotNet
             txtTenantCode.Text = classQuery.tenantCode;
             txtTenantName.Text = classQuery.tenantName;
             txtContractNumber.Text = classQuery.tenantContract;
+            txtAyalaFolder.Text = classQuery.ayalaFolder;
 
             classQuery.LoadTaxMap();
             dgwTaxTable.DataSource = classQuery.dtTax;
@@ -60,6 +61,7 @@ namespace Ayala_Interface_dotNet
             classQuery.UpdateConfig("@tenantCode", OleDbType.Char, 3, "tenantCode", txtTenantCode.Text);
             classQuery.UpdateConfig("@tenantName", OleDbType.Char, 10, "tenantName", txtTenantName.Text);
             classQuery.UpdateConfig("@tenantContract", OleDbType.Char, 100, "tenantContract", txtContractNumber.Text);
+            classQuery.UpdateConfig("@ayalaFolder", OleDbType.Char, 100, "ayalaFolder", txtAyalaFolder.Text);
             
             //save DataGridViewTax
             OleDbCommandBuilder cmdBuild;
@@ -78,6 +80,7 @@ namespace Ayala_Interface_dotNet
 #endregion
 
         #region "BrowserFolderDialog"
+
         private void btnBrowseRM_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog browseRM = new FolderBrowserDialog();
@@ -96,14 +99,19 @@ namespace Ayala_Interface_dotNet
                 txtPrinterPath.Text = browseRM.SelectedPath.ToString();
             }
         }
-        #endregion  
 
-        private void groupBox1_Enter(object sender, EventArgs e)
+        private void browseDestination_Click(object sender, EventArgs e)
         {
-
+            FolderBrowserDialog browseAyala = new FolderBrowserDialog();
+            browseAyala.ShowDialog();
+            if (browseAyala.SelectedPath != null)
+            {
+                txtAyalaFolder.Text = browseAyala.SelectedPath.ToString();
+            }
         }
+        #endregion      
 
-      
+        
 
     }
 }
