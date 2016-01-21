@@ -92,6 +92,7 @@ namespace Ayala_Interface_dotNet.ClassCon
              //Fire Query
              cmd = new OleDbCommand(sql, con);
              rdr = cmd.ExecuteReader();
+             rdr.Read();
          }
 
          public void RMQueries(string sql)
@@ -128,11 +129,10 @@ namespace Ayala_Interface_dotNet.ClassCon
          public void DBFQuery (string sql)
          {
              cmd = new OleDbCommand(sql, tempCon);
-             cmd.ExecuteReader();
-             
+             cmd.ExecuteNonQuery();
          }
 
-        #endregion
+         #endregion
               
      }
 

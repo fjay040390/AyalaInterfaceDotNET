@@ -15,6 +15,7 @@ namespace Ayala_Interface_dotNet.ClassCon
         public string tenantName { get; set; }
         public string tenantCode { get; set; }
         public string tenantContract { get; set; }
+        public string ayalaFolder { get; set; }
 
         public DataTable dtTax { get; set; }
         public DataTable dtDiscount { get; set; }
@@ -32,10 +33,8 @@ namespace Ayala_Interface_dotNet.ClassCon
             //rdr.Read();
             if (rdr.HasRows) {
                 //read data from database
-                while (rdr.Read()) {
-                    userPass = rdr.GetValue(0).ToString();
-                    adminPass = rdr.GetValue(1).ToString();                    
-                }
+                userPass = rdr.GetValue(0).ToString();
+                adminPass = rdr.GetValue(1).ToString();                    
             }
         }
 
@@ -43,28 +42,30 @@ namespace Ayala_Interface_dotNet.ClassCon
         public void LoadConfigDetails()
         {
             Queries("Select * FROM tblLogin");
-            if (rdr.HasRows) {
-                while (rdr.Read()) {
-                    userPass = rdr.GetValue(0).ToString();
-                    adminPass = rdr.GetValue(1).ToString();
-                    rmPath = rdr.GetValue(2).ToString();
-                    printerPath = rdr.GetValue(3).ToString();
-                    tenantCode = rdr.GetValue(4).ToString();
-                    tenantName = rdr.GetValue(5).ToString();
-                    tenantContract = rdr.GetValue(6).ToString();
-                }
+            if (rdr.HasRows)
+            {
+                userPass = rdr.GetValue(0).ToString();
+                adminPass = rdr.GetValue(1).ToString();
+                rmPath = rdr.GetValue(2).ToString();
+                printerPath = rdr.GetValue(3).ToString();
+                tenantCode = rdr.GetValue(4).ToString();
+                tenantName = rdr.GetValue(5).ToString();
+                tenantContract = rdr.GetValue(6).ToString();
+                ayalaFolder = rdr.GetValue(7).ToString();
             }
         }
        
         //loadtaxmap
-        public void LoadTaxMap() {
+        public void LoadTaxMap() 
+        {
             LoadDataGridViewTax("SELECT TaxTitle as Description, TaxMap as ID,TaxPLU as PLU FROM tblTaxMapping");
             dtTax = new DataTable();
             daTax.Fill(dtTax);
         }
     
         //loadRMDiscount
-        public void LoadDiscount() {
+        public void LoadDiscount() 
+        {
             LoadDataGridViewDiscount("SELECT DscMap as ID, DscPLU as PLU FROM tblRMDiscount");
             dtDiscount = new DataTable();
             daDiscount.Fill(dtDiscount);

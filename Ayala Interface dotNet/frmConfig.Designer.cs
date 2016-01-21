@@ -30,6 +30,11 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmConfig));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.browseAyala = new System.Windows.Forms.Button();
+            this.label11 = new System.Windows.Forms.Label();
+            this.txtAyalaFolder = new System.Windows.Forms.TextBox();
+            this.dgwLessVAT = new System.Windows.Forms.DataGridView();
+            this.label10 = new System.Windows.Forms.Label();
             this.btnBrowsePrinter = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.txtPrinterPath = new System.Windows.Forms.TextBox();
@@ -52,16 +57,17 @@
             this.btnBrowseRM = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.browseRM = new System.Windows.Forms.FolderBrowserDialog();
-            this.dgwLessVAT = new System.Windows.Forms.DataGridView();
-            this.label10 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgwLessVAT)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgwDiscountNonVat)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgwTaxTable)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgwLessVAT)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.browseAyala);
+            this.groupBox1.Controls.Add(this.label11);
+            this.groupBox1.Controls.Add(this.txtAyalaFolder);
             this.groupBox1.Controls.Add(this.dgwLessVAT);
             this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.btnBrowsePrinter);
@@ -87,17 +93,63 @@
             this.groupBox1.Controls.Add(this.btnSave);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(816, 419);
+            this.groupBox1.Size = new System.Drawing.Size(816, 453);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // browseAyala
+            // 
+            this.browseAyala.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Aqua;
+            this.browseAyala.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Lime;
+            this.browseAyala.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.browseAyala.Location = new System.Drawing.Point(388, 76);
+            this.browseAyala.Name = "browseAyala";
+            this.browseAyala.Size = new System.Drawing.Size(75, 25);
+            this.browseAyala.TabIndex = 25;
+            this.browseAyala.Text = "BROWSE";
+            this.browseAyala.UseVisualStyleBackColor = true;
+            this.browseAyala.Click += new System.EventHandler(this.browseDestination_Click);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(25, 84);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(68, 13);
+            this.label11.TabIndex = 24;
+            this.label11.Text = "Ayala Folder:";
+            // 
+            // txtAyalaFolder
+            // 
+            this.txtAyalaFolder.Location = new System.Drawing.Point(109, 79);
+            this.txtAyalaFolder.MaxLength = 100;
+            this.txtAyalaFolder.Name = "txtAyalaFolder";
+            this.txtAyalaFolder.Size = new System.Drawing.Size(273, 20);
+            this.txtAyalaFolder.TabIndex = 23;
+            // 
+            // dgwLessVAT
+            // 
+            this.dgwLessVAT.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgwLessVAT.Location = new System.Drawing.Point(555, 204);
+            this.dgwLessVAT.Name = "dgwLessVAT";
+            this.dgwLessVAT.Size = new System.Drawing.Size(235, 243);
+            this.dgwLessVAT.TabIndex = 22;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(552, 188);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(53, 13);
+            this.label10.TabIndex = 21;
+            this.label10.Text = "Less VAT";
             // 
             // btnBrowsePrinter
             // 
             this.btnBrowsePrinter.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Aqua;
             this.btnBrowsePrinter.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Lime;
             this.btnBrowsePrinter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBrowsePrinter.Location = new System.Drawing.Point(388, 50);
+            this.btnBrowsePrinter.Location = new System.Drawing.Point(388, 46);
             this.btnBrowsePrinter.Name = "btnBrowsePrinter";
             this.btnBrowsePrinter.Size = new System.Drawing.Size(75, 25);
             this.btnBrowsePrinter.TabIndex = 20;
@@ -125,7 +177,7 @@
             // dgwDiscountNonVat
             // 
             this.dgwDiscountNonVat.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgwDiscountNonVat.Location = new System.Drawing.Point(319, 170);
+            this.dgwDiscountNonVat.Location = new System.Drawing.Point(314, 204);
             this.dgwDiscountNonVat.Name = "dgwDiscountNonVat";
             this.dgwDiscountNonVat.Size = new System.Drawing.Size(235, 243);
             this.dgwDiscountNonVat.TabIndex = 17;
@@ -133,7 +185,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(316, 154);
+            this.label8.Location = new System.Drawing.Point(311, 188);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(128, 13);
             this.label8.TabIndex = 16;
@@ -144,7 +196,7 @@
             this.dgwTaxTable.AllowUserToAddRows = false;
             this.dgwTaxTable.AllowUserToDeleteRows = false;
             this.dgwTaxTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgwTaxTable.Location = new System.Drawing.Point(28, 170);
+            this.dgwTaxTable.Location = new System.Drawing.Point(23, 204);
             this.dgwTaxTable.Name = "dgwTaxTable";
             this.dgwTaxTable.Size = new System.Drawing.Size(285, 243);
             this.dgwTaxTable.TabIndex = 15;
@@ -152,7 +204,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(25, 154);
+            this.label7.Location = new System.Drawing.Point(20, 188);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(60, 13);
             this.label7.TabIndex = 14;
@@ -161,7 +213,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(13, 134);
+            this.label6.Location = new System.Drawing.Point(13, 159);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(90, 13);
             this.label6.TabIndex = 13;
@@ -169,7 +221,7 @@
             // 
             // txtContractNumber
             // 
-            this.txtContractNumber.Location = new System.Drawing.Point(109, 131);
+            this.txtContractNumber.Location = new System.Drawing.Point(109, 156);
             this.txtContractNumber.MaxLength = 100;
             this.txtContractNumber.Name = "txtContractNumber";
             this.txtContractNumber.Size = new System.Drawing.Size(273, 20);
@@ -216,7 +268,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(25, 110);
+            this.label3.Location = new System.Drawing.Point(25, 135);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(75, 13);
             this.label3.TabIndex = 7;
@@ -224,7 +276,7 @@
             // 
             // txtTenantName
             // 
-            this.txtTenantName.Location = new System.Drawing.Point(109, 105);
+            this.txtTenantName.Location = new System.Drawing.Point(109, 130);
             this.txtTenantName.MaxLength = 10;
             this.txtTenantName.Name = "txtTenantName";
             this.txtTenantName.Size = new System.Drawing.Size(273, 20);
@@ -233,7 +285,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(31, 84);
+            this.label2.Location = new System.Drawing.Point(31, 109);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(72, 13);
             this.label2.TabIndex = 5;
@@ -241,7 +293,7 @@
             // 
             // txtTenantCode
             // 
-            this.txtTenantCode.Location = new System.Drawing.Point(109, 80);
+            this.txtTenantCode.Location = new System.Drawing.Point(109, 105);
             this.txtTenantCode.MaxLength = 3;
             this.txtTenantCode.Name = "txtTenantCode";
             this.txtTenantCode.Size = new System.Drawing.Size(273, 20);
@@ -290,30 +342,13 @@
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // dgwLessVAT
-            // 
-            this.dgwLessVAT.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgwLessVAT.Location = new System.Drawing.Point(560, 170);
-            this.dgwLessVAT.Name = "dgwLessVAT";
-            this.dgwLessVAT.Size = new System.Drawing.Size(235, 243);
-            this.dgwLessVAT.TabIndex = 22;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(557, 154);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(53, 13);
-            this.label10.TabIndex = 21;
-            this.label10.Text = "Less VAT";
-            // 
             // frmConfig
             // 
             this.AcceptButton = this.btnSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(840, 443);
+            this.ClientSize = new System.Drawing.Size(840, 477);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -325,9 +360,9 @@
             this.Load += new System.EventHandler(this.frmConfig_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgwLessVAT)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgwDiscountNonVat)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgwTaxTable)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgwLessVAT)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -359,5 +394,8 @@
         private System.Windows.Forms.TextBox txtPrinterPath;
         private System.Windows.Forms.DataGridView dgwLessVAT;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button browseAyala;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox txtAyalaFolder;
     }
 }
