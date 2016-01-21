@@ -29,11 +29,22 @@ namespace Ayala_Interface_dotNet
 
             classQuery.LoadTaxMap();
             dgwTaxTable.DataSource = classQuery.dtTax;
+            dgwTaxTable.Columns[0].Width = 80;
+            dgwTaxTable.Columns[1].Width = 70;
+            dgwTaxTable.Columns[2].Width = 70;
             classQuery.dtTax.Dispose();
 
             classQuery.LoadDiscount();
             dgwDiscountNonVat.DataSource = classQuery.dtDiscount;
+            dgwDiscountNonVat.Columns[0].Width = 70;
+            dgwDiscountNonVat.Columns[1].Width = 70;
             classQuery.dtTax.Dispose();
+
+            classQuery.LoadLessVAT();
+            dgwLessVAT.DataSource = classQuery.dtLessVAT;
+            dgwLessVAT.Columns[0].Width = 70;
+            dgwLessVAT.Columns[1].Width = 70;
+            classQuery.dtLessVAT.Dispose();
         }
 
         #endregion
@@ -57,9 +68,11 @@ namespace Ayala_Interface_dotNet
             //save DataGridViewDiscount
             cmdBuild = new OleDbCommandBuilder(classQuery.daDiscount);
             classQuery.daDiscount.Update(classQuery.dtDiscount);
+            //save DataGridViewLessVAT
+            cmdBuild = new OleDbCommandBuilder(classQuery.daLessVAT);
+            classQuery.daLessVAT.Update(classQuery.dtLessVAT);
             MessageBox.Show("Update successful!");
             this.Dispose();
-            MessageBox.Show(classQuery.rmPath);
         }
 
 #endregion

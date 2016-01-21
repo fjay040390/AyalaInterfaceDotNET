@@ -18,6 +18,7 @@ namespace Ayala_Interface_dotNet.ClassCon
          public OleDbDataReader rdr;
          public OleDbDataAdapter daTax;
          public OleDbDataAdapter daDiscount;
+         public OleDbDataAdapter daLessVAT;
          public OleDbCommandBuilder cmdb;
          
          public string rmPath { get; set; }
@@ -108,6 +109,7 @@ namespace Ayala_Interface_dotNet.ClassCon
              openConnection();
              daTax = new OleDbDataAdapter(sql, con);
          }
+
          public void LoadDataGridViewDiscount(string sql)
          {
              daDiscount = new OleDbDataAdapter();
@@ -115,6 +117,13 @@ namespace Ayala_Interface_dotNet.ClassCon
              daDiscount = new OleDbDataAdapter(sql, con);
          }
 
+         public void LoadDataGridViewLessVAT(string sql)
+         {
+             daLessVAT = new OleDbDataAdapter();
+             openConnection();
+             daLessVAT = new OleDbDataAdapter(sql, con);
+         }
+         
          //execute computation to dbf query
          public void DBFQuery (string sql)
          {
@@ -122,6 +131,7 @@ namespace Ayala_Interface_dotNet.ClassCon
              cmd.ExecuteReader();
              
          }
+
         #endregion
               
      }
