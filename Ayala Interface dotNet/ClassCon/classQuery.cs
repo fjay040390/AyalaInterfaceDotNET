@@ -5,7 +5,9 @@ namespace Ayala_Interface_dotNet.ClassCon
 {
     public class classQuery : classDBConnection  
     {
+
         #region "Properties"
+
         public string userPass { get; set; }
         public string adminPass { get; set; }
         public string printerPath { get; set; }
@@ -16,15 +18,11 @@ namespace Ayala_Interface_dotNet.ClassCon
 
         public DataTable dtTax { get; set; }
         public DataTable dtDiscount { get; set; }
+        public DataTable dtLessVAT { get; set; }
 
         #endregion
 
-        public classQuery()
-        {
-            
-        }
-
-        #region "Queries Command"
+       #region "Queries Command"
         
         //get loginDetailsForLoginForm
         public void GetLoginDetails()
@@ -60,16 +58,24 @@ namespace Ayala_Interface_dotNet.ClassCon
        
         //loadtaxmap
         public void LoadTaxMap() {
-            LoadDataGridViewTax("SELECT TaxTitle,TaxMap,TaxPLU FROM tblTaxMapping");
+            LoadDataGridViewTax("SELECT TaxTitle as Description, TaxMap as ID,TaxPLU as PLU FROM tblTaxMapping");
             dtTax = new DataTable();
             daTax.Fill(dtTax);
         }
     
         //loadRMDiscount
         public void LoadDiscount() {
-            LoadDataGridViewDiscount("SELECT DscMap, DscPLU FROM tblRMDiscount");
+            LoadDataGridViewDiscount("SELECT DscMap as ID, DscPLU as PLU FROM tblRMDiscount");
             dtDiscount = new DataTable();
             daDiscount.Fill(dtDiscount);
+        }
+
+        //loadRMLessVAT
+        public void LoadLessVAT()
+        {
+            LoadDataGridViewLessVAT("SELECT DscMap as ID , DscVAT as PLU FROM tblRMLessVAT");
+            dtLessVAT = new DataTable();
+            daLessVAT.Fill(dtLessVAT);
         }
         #endregion
 
@@ -85,7 +91,6 @@ namespace Ayala_Interface_dotNet.ClassCon
             cmd.ExecuteNonQuery();
         }
         #endregion
-
-    
+         
     }
 }

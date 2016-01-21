@@ -52,13 +52,18 @@
             this.btnBrowseRM = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.browseRM = new System.Windows.Forms.FolderBrowserDialog();
+            this.dgwLessVAT = new System.Windows.Forms.DataGridView();
+            this.label10 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgwDiscountNonVat)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgwTaxTable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgwLessVAT)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.dgwLessVAT);
+            this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.btnBrowsePrinter);
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.txtPrinterPath);
@@ -82,7 +87,7 @@
             this.groupBox1.Controls.Add(this.btnSave);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(743, 411);
+            this.groupBox1.Size = new System.Drawing.Size(816, 419);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
@@ -119,17 +124,16 @@
             // 
             // dgwDiscountNonVat
             // 
-            this.dgwDiscountNonVat.AllowUserToDeleteRows = false;
             this.dgwDiscountNonVat.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgwDiscountNonVat.Location = new System.Drawing.Point(307, 170);
+            this.dgwDiscountNonVat.Location = new System.Drawing.Point(319, 170);
             this.dgwDiscountNonVat.Name = "dgwDiscountNonVat";
-            this.dgwDiscountNonVat.Size = new System.Drawing.Size(273, 235);
+            this.dgwDiscountNonVat.Size = new System.Drawing.Size(235, 243);
             this.dgwDiscountNonVat.TabIndex = 17;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(304, 154);
+            this.label8.Location = new System.Drawing.Point(316, 154);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(128, 13);
             this.label8.TabIndex = 16;
@@ -137,11 +141,12 @@
             // 
             // dgwTaxTable
             // 
+            this.dgwTaxTable.AllowUserToAddRows = false;
             this.dgwTaxTable.AllowUserToDeleteRows = false;
             this.dgwTaxTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgwTaxTable.Location = new System.Drawing.Point(28, 170);
             this.dgwTaxTable.Name = "dgwTaxTable";
-            this.dgwTaxTable.Size = new System.Drawing.Size(273, 235);
+            this.dgwTaxTable.Size = new System.Drawing.Size(285, 243);
             this.dgwTaxTable.TabIndex = 15;
             // 
             // label7
@@ -173,7 +178,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(526, 48);
+            this.label4.Location = new System.Drawing.Point(584, 44);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(81, 13);
             this.label4.TabIndex = 11;
@@ -181,7 +186,7 @@
             // 
             // txtUserPass
             // 
-            this.txtUserPass.Location = new System.Drawing.Point(613, 45);
+            this.txtUserPass.Location = new System.Drawing.Point(671, 41);
             this.txtUserPass.MaxLength = 4;
             this.txtUserPass.Name = "txtUserPass";
             this.txtUserPass.PasswordChar = '*';
@@ -192,7 +197,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(519, 22);
+            this.label5.Location = new System.Drawing.Point(577, 18);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(88, 13);
             this.label5.TabIndex = 9;
@@ -200,7 +205,7 @@
             // 
             // txtAdminPass
             // 
-            this.txtAdminPass.Location = new System.Drawing.Point(613, 19);
+            this.txtAdminPass.Location = new System.Drawing.Point(671, 15);
             this.txtAdminPass.MaxLength = 4;
             this.txtAdminPass.Name = "txtAdminPass";
             this.txtAdminPass.PasswordChar = '*';
@@ -277,7 +282,7 @@
             this.btnSave.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Lime;
             this.btnSave.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Aqua;
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSave.Location = new System.Drawing.Point(598, 358);
+            this.btnSave.Location = new System.Drawing.Point(656, 84);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(139, 47);
             this.btnSave.TabIndex = 0;
@@ -285,13 +290,30 @@
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
+            // dgwLessVAT
+            // 
+            this.dgwLessVAT.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgwLessVAT.Location = new System.Drawing.Point(560, 170);
+            this.dgwLessVAT.Name = "dgwLessVAT";
+            this.dgwLessVAT.Size = new System.Drawing.Size(235, 243);
+            this.dgwLessVAT.TabIndex = 22;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(557, 154);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(53, 13);
+            this.label10.TabIndex = 21;
+            this.label10.Text = "Less VAT";
+            // 
             // frmConfig
             // 
             this.AcceptButton = this.btnSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(767, 435);
+            this.ClientSize = new System.Drawing.Size(840, 443);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -305,6 +327,7 @@
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgwDiscountNonVat)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgwTaxTable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgwLessVAT)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -334,5 +357,7 @@
         private System.Windows.Forms.Button btnBrowsePrinter;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox txtPrinterPath;
+        private System.Windows.Forms.DataGridView dgwLessVAT;
+        private System.Windows.Forms.Label label10;
     }
 }
