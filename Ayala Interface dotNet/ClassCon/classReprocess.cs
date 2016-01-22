@@ -8,6 +8,8 @@ namespace Ayala_Interface_dotNet.ClassCon
 {
     public class classReprocess : classQuery
     {
+       
+
         #region "Declaration"
 
         public string repYear { get; set; }
@@ -18,14 +20,15 @@ namespace Ayala_Interface_dotNet.ClassCon
         public string bill_start { get; set; }
         public string bill_end { get; set; }
 
-        public DateTime strDate;
-        public DateTime endDate;
+        public DateTime strDate { get; set; }
+        public DateTime endDate { get; set; }
 
         #endregion
 
         #region "Properties for Computation"
 
-        public Int64 dbTotalTransaction { get; set; }
+        public int dbTotalTransaction { get; set; }
+        public int TerminalNumber { get; set; }
 
         public double dbServiceCharge { get; set; }
         public double dbNoTaxSales { get; set; }
@@ -33,7 +36,8 @@ namespace Ayala_Interface_dotNet.ClassCon
         public double dbTotalOthers { get; set; }
         public double dbTotalSales { get; set; }
         public double dbTotalVat { get; set; }
-        public double dbTotalCANREF { get; set; }
+        public double dbTotalCAN { get; set; }
+        public double dbTotalREF { get; set; }
         public double dbTotalDiscount { get; set; }
         public double dbTotalPercentCheck { get; set; }
         public double dbTotalPercentItem { get; set; }
@@ -48,7 +52,13 @@ namespace Ayala_Interface_dotNet.ClassCon
         public double dbOldGT { get; set; }
         public double dbNewGT { get; set; }
 
+        public double dbhrlySales { get; set; }
+        public double dbhrlyTotalTransaction { get; set; }
+        public string transactionHours { get; set; }
+
         public string strDscVat {get; set; }
+        public string TenantName { get; set; }
+
         #endregion
 
         #region "Tax Table Fields"
@@ -69,7 +79,6 @@ namespace Ayala_Interface_dotNet.ClassCon
             LoadLessVAT();
             GetTaxTableConfig();
             GetLessVatConfig();
-            rmConnect();
         }
 
         #region "Save Filter"
@@ -82,6 +91,10 @@ namespace Ayala_Interface_dotNet.ClassCon
             endDate = Convert.ToDateTime(dateEnd);
             strDate = Convert.ToDateTime(dateStart);
             do {
+                //frmReprocess frmReprocess = new frmReprocess();
+                //frmReprocess.lblReprocessDate = dateStart;
+                //Connect to DB
+                rmConnect();
                 //2016 = 16
                 repYear = strDate.ToString("yy");
                 //January = 01
@@ -90,11 +103,38 @@ namespace Ayala_Interface_dotNet.ClassCon
                 GetSessionNo();
                 //Get Sales
                 ComputeDailySales(1);
+                //Get Hourly Sales                
+                GenerateHourlySales("00:00:00","00:59:59",1);
+                GenerateHourlySales("01:00:00", "01:59:59", 1);
+                GenerateHourlySales("02:00:00", "02:59:59", 1);
+                GenerateHourlySales("03:00:00", "03:59:59", 1);
+                GenerateHourlySales("04:00:00", "04:59:59", 1);
+                GenerateHourlySales("05:00:00", "05:59:59", 1);
+                GenerateHourlySales("06:00:00", "06:59:59", 1);
+                GenerateHourlySales("07:00:00", "07:59:59", 1);
+                GenerateHourlySales("08:00:00", "08:59:59", 1);
+                GenerateHourlySales("09:00:00", "09:59:59", 1);
+                GenerateHourlySales("10:00:00", "10:59:59", 1);
+                GenerateHourlySales("11:00:00", "11:59:59", 1);
+                GenerateHourlySales("12:00:00", "12:59:59", 1);
+                GenerateHourlySales("13:00:00", "13:59:59", 1);
+                GenerateHourlySales("14:00:00", "14:59:59", 1);
+                GenerateHourlySales("15:00:00", "15:59:59", 1);
+                GenerateHourlySales("16:00:00", "16:59:59", 1);
+                GenerateHourlySales("17:00:00", "17:59:59", 1);
+                GenerateHourlySales("18:00:00", "18:59:59", 1);
+                GenerateHourlySales("19:00:00", "19:59:59", 1);
+                GenerateHourlySales("20:00:00", "20:59:59", 1);
+                GenerateHourlySales("21:00:00", "21:59:59", 1);
+                GenerateHourlySales("22:00:00", "22:59:59", 1);
+                GenerateHourlySales("23:00:00", "23:59:59", 1);
                 //Write to file
                 //classWriteFile writeFile = new classWriteFile();
                 //writeFile.GenerateFile();
                 //Add 1 day to loop
                 strDate = strDate.AddDays(1);
+                //Disconnect to DB
+                rmDisconnect();
             } while (strDate <= endDate);
         }
         #endregion
@@ -171,13 +211,16 @@ namespace Ayala_Interface_dotNet.ClassCon
 
         public void ComputeDailySales(int strTerminal)
         {
+            //classWriteFile classWriteFile = new classWriteFile();
+            
             //BeginOr, EndOR, BeginInv, EndInv
             bill_startINV = bill_start;
             bill_endINV = bill_end;
-            
+            //terminal Number
+            TerminalNumber = strTerminal;
             //transaction Date
-            dbDateStart = dateStart;
-
+            dbDateStart = strDate.ToString("d");
+                    
             //TotalVat
             RMQueries("SELECT SUM(a.Tax_Amt) FROM TAX" + repMonth + repYear + ".DBF a LEFT JOIN SLS" + repMonth + repYear + " b ON b.Bill_No = a.Bill_No WHERE b.Pay_Type <> 5 AND  b.Session_no = " + sessNo + " AND a.Tax_No = " + primaryVAT + " OR a.Tax_No = " + secondaryVAT + " AND b.Settle_stn =" + strTerminal);
             dbTotalVat = ReturnData(rdr[0].ToString());
@@ -187,15 +230,18 @@ namespace Ayala_Interface_dotNet.ClassCon
             RMQueries("SELECT Sum(a.Discount) as TotalPercentCheck FROM SLS" + repMonth + repYear + ".DBF a WHERE a.Session_No = " + sessNo + " AND a.pay_type <> 5 AND a.disc_type NOT IN (" + strDscVat + ")  AND a.settle_stn=" + strTerminal);
             dbTotalPercentCheck = ReturnData(rdr[0].ToString()); 
             //ITEM
-            RMQueries("SELECT SUM(ABS(ITEM_ADJ) * QUANTY) AS TotalPercentItem FROM SDET" + repMonth + repYear + " LEFT JOIN SLS" + repMonth + repYear + " a ON Bill_No = Bill_No WHERE pay_type <> 5 and Session_No = " + sessNo + " AND DISC_NO NOT IN(" + strDscVat + ") and settle_stn =" + strTerminal);
+            RMQueries("SELECT SUM(ABS(a.ITEM_ADJ) * a.QUANTY) AS TotalPercentItem FROM SDET" + repMonth + repYear + ".DBF a LEFT JOIN SLS" + repMonth + repYear + ".DBF b ON a.Bill_No = b.Bill_No WHERE b.pay_type <> 5 and b.Session_No = " + sessNo + " AND a.DISC_NO NOT IN (" + strDscVat + ") and b.settle_stn =" + strTerminal);
             dbTotalPercentItem = ReturnData(rdr[0].ToString());
             //Total Discounts
             dbTotalDiscount = dbTotalPercentItem + dbTotalPercentCheck;
 
-            //totalCanRef
+            //totalCan
             RMQueries("SELECT SUM(TOTAL) FROM SLS" + repMonth + repYear + ".DBF WHERE Session_No = " + sessNo + " AND Pay_type = 5 AND Settle_stn =" + strTerminal);
-            dbTotalCANREF = ReturnData(rdr[0].ToString());
-                                   
+            dbTotalCAN = ReturnData(rdr[0].ToString());
+                          
+            //totalRef
+            dbTotalREF = 0;
+
             //getServiceCharge
             //Auto Grat
             RMQueries("SELECT sum(auto_grat) from SLS" + repMonth + repYear + ".DBF WHERE Session_No = " + sessNo);
@@ -225,10 +271,10 @@ namespace Ayala_Interface_dotNet.ClassCon
             dbTotalTransaction = (int.Parse(bill_end) - int.Parse(bill_start)) + 1;
            
             //Total Raw Gross
-            dbTotalRawGross = dbTotalSales + dbLocalTax + dbTotalVat + dbServiceCharge + dbTotalCANREF + dbTotalDiscount;
+            dbTotalRawGross = dbTotalSales + dbLocalTax + dbTotalVat + dbServiceCharge + dbTotalCAN + dbTotalDiscount;
             
             //Total Daily Sales
-            dbTotalDlySales = dbTotalRawGross - dbTotalDiscount - dbTotalCANREF - dbServiceCharge - dbTotalVat;
+            dbTotalDlySales = dbTotalRawGross - dbTotalDiscount - dbTotalCAN - dbServiceCharge - dbTotalVat;
 
             //Old Grand Total
             Queries("SELECT TOP 1 GTAmount as GTAmnt FROM tblGTValues WHERE SessionNo <= " + sessNo + " AND TerminalID = '" + strTerminal + "' ORDER BY SessionNO DESC");
@@ -236,9 +282,38 @@ namespace Ayala_Interface_dotNet.ClassCon
                                      
             //New Grand Total
             dbNewGT = dbOldGT + dbTotalDlySales + dbTotalVat;
+            GenerateFile();
+            //classWriteFile.GenerateFile(dbDateStart);
+            
         }
 
+        public void GenerateHourlySales(string startHour, string endHours, Int16 strTerminal)
+        {
+   
+            RMQueries("SELECT Sum(Total + Taxes) FROM SLS" + repMonth + repYear + ".DBF WHERE Session_No = " + sessNo +
+                      " AND Pay_Type <> 5 AND Open_Time >= '" + startHour + "' AND Open_Time <= '" + endHours +
+                      "' AND Settle_stn = " + strTerminal);
+            dbhrlySales = ReturnData(rdr[0].ToString());
+
+            RMQueries("SELECT Count(bill_no)FROM SLS" + repMonth + repYear + ".DBF WHERE Session_no = " + sessNo +
+                     "AND Open_Time >= '" + startHour + "' AND Open_Time <= '" + endHours + "' AND Settle_stn = " + strTerminal);
+            dbhrlyTotalTransaction = ReturnData(rdr[0].ToString());
+
+        }
         #endregion
+
+        #region "Write Files"
+
+        public void GenerateFile()
+        {
+            TemplateConnection();
+            
+            DBFQuery("INSERT INTO Daily VALUES ('" + dbDateStart + "'," + dbOldGT + "," + dbNewGT + "," + dbTotalDlySales + "," + dbTotalDiscount + "," + dbTotalREF + "," + dbTotalCAN + "," + dbTotalVat + ",'" + tenantName + "'," + bill_startINV + "," + bill_endINV + "," + bill_start + "," + bill_end + "," + dbTotalTransaction + "," + dbLocalTax + "," + dbServiceCharge + "," + dbNoTaxSales + "," + dbTotalRawGross + "," + dbLocalTax + "," + dbTotalOthers + "," + TerminalNumber + ")");
+
+            TemplateConnectionClose();
+        }
+
+        #endregion  
 
     }
 }

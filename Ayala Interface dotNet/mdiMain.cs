@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Windows.Forms;
+using Ayala_Interface_dotNet.ClassCon;
 
 namespace Ayala_Interface_dotNet
 {
     public partial class mdiMain : Form
     {
-        
         public mdiMain()
         {
             InitializeComponent();
@@ -26,7 +26,7 @@ namespace Ayala_Interface_dotNet
         {
             Form frmReprocess = new frmReprocess();
             frmReprocess.ShowDialog();
-        }
+	   	}
 
         private void mdiMain_Load(object sender, EventArgs e)
         {

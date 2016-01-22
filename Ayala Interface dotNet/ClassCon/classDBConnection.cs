@@ -46,11 +46,21 @@ namespace Ayala_Interface_dotNet.ClassCon
 
          public void rmConnect()
          {
-             rmPath = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + rmPath + ";Extended Properties=dBASE IV;User ID=Admin;Password=;";
-             rmCon = new OleDbConnection(rmPath);
+             string rmConStr;
+             rmConStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + rmPath + ";Extended Properties=dBASE IV;User ID=Admin;Password=;";
+             rmCon = new OleDbConnection(rmConStr);
              if (rmCon.State == ConnectionState.Closed)
              {
                  rmCon.Open();
+             }
+         }
+
+         public void rmDisconnect()
+         {
+             if (rmCon.State == ConnectionState.Open)
+             {
+                 rmCon.Close();
+                 rmCon.Dispose();
              }
          }
 
@@ -61,6 +71,14 @@ namespace Ayala_Interface_dotNet.ClassCon
              if (tempCon.State == ConnectionState.Closed)
              {
                  tempCon.Open();
+             }
+         }
+
+         public void TemplateConnectionClose()
+         {
+             if (tempCon.State == ConnectionState.Open)
+             {
+                 tempCon.Close();
              }
          }
 
@@ -97,10 +115,12 @@ namespace Ayala_Interface_dotNet.ClassCon
 
          public void RMQueries(string sql)
          {
+             //rmConnect();
              //Fire Query
              cmd = new OleDbCommand(sql, rmCon);
              rdr = cmd.ExecuteReader();
              rdr.Read();
+             
          }
   
          //execute datagridview query

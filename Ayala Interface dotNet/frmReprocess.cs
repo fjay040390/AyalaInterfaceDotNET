@@ -16,15 +16,14 @@ namespace Ayala_Interface_dotNet
 
         private void btnReprocess_Click(object sender, EventArgs e)
         {
+           /* DateTime mStart = Convert.ToDateTime(monthStart.SelectionRange.Start.ToShortDateString());
+            DateTime mEnd = Convert.ToDateTime(monthEnd.SelectionStart.ToShortDateString());
+            TimeSpan mDateDiff = mEnd.Subtract(mStart);
+            pbProgress.Maximum = Convert.ToInt16(mDateDiff.TotalDays.ToString()); */
             classReprocess.dateStart = lblStart.Text;
             classReprocess.dateEnd = lblEnd.Text;
             classReprocess.FilterDate();
             MessageBox.Show("Process Complete!");
-        }
-
-        private void frmReprocess_Load(object sender, EventArgs e)
-        {
-            
         }
 
         private void monthStart_DateChanged(object sender, DateRangeEventArgs e)
@@ -37,11 +36,27 @@ namespace Ayala_Interface_dotNet
             lblEnd.Text = monthEnd.SelectionStart.ToShortDateString();
         }
 
-        private void groupBox1_Enter(object sender, EventArgs e)
+        #region "Properties"
+
+        public string lblReprocessDate 
+        { 
+            get { return this.lblDateStatus.Text; } 
+            set { this.lblDateStatus.Text = value; }
+        }
+
+        public int intReprocessValue 
+        {
+            get { return this.pbProgress.Value; }
+            set { this.pbProgress.Value = value; }
+        }
+
+        #endregion  
+
+        private void lblStart_Click(object sender, EventArgs e)
         {
 
         }
 
-     
+      
     }
 }
