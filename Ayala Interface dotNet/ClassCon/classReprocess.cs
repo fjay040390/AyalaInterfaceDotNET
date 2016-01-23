@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Data;
+using System.Collections;
 using System.Data.OleDb;
 using System.Configuration;
 using System.Windows.Forms;
@@ -8,7 +10,17 @@ namespace Ayala_Interface_dotNet.ClassCon
 {
     public class classReprocess : classQuery
     {
-       
+     
+        public classReprocess()
+        {
+            LoadConfigDetails();
+            CheckFolderAyala();
+            LoadDiscount();
+            LoadTaxMap();
+            LoadLessVAT();
+            GetTaxTableConfig();
+            GetLessVatConfig();
+        }
 
         #region "Declaration"
 
@@ -23,6 +35,12 @@ namespace Ayala_Interface_dotNet.ClassCon
         public DateTime strDate { get; set; }
         public DateTime endDate { get; set; }
 
+        public string fileNamePath { get; set; }
+        public string distinationFolder { get; set; }
+        public string distinationFileName { get; set; }
+        public string hourlyPath { get; set; }
+        public string sourceFile { get; set; }
+        public string targetFile { get; set; }
         #endregion
 
         #region "Properties for Computation"
@@ -71,16 +89,6 @@ namespace Ayala_Interface_dotNet.ClassCon
 
         #endregion
 
-        public classReprocess()
-        {
-            LoadConfigDetails();
-            LoadDiscount();
-            LoadTaxMap();
-            LoadLessVAT();
-            GetTaxTableConfig();
-            GetLessVatConfig();
-        }
-
         #region "Save Filter"
 
         //FilteringDate
@@ -104,30 +112,30 @@ namespace Ayala_Interface_dotNet.ClassCon
                 //Get Sales
                 ComputeDailySales(1);
                 //Get Hourly Sales                
-                GenerateHourlySales("00:00:00","00:59:59",1);
-                GenerateHourlySales("01:00:00", "01:59:59", 1);
-                GenerateHourlySales("02:00:00", "02:59:59", 1);
-                GenerateHourlySales("03:00:00", "03:59:59", 1);
-                GenerateHourlySales("04:00:00", "04:59:59", 1);
-                GenerateHourlySales("05:00:00", "05:59:59", 1);
-                GenerateHourlySales("06:00:00", "06:59:59", 1);
-                GenerateHourlySales("07:00:00", "07:59:59", 1);
-                GenerateHourlySales("08:00:00", "08:59:59", 1);
-                GenerateHourlySales("09:00:00", "09:59:59", 1);
-                GenerateHourlySales("10:00:00", "10:59:59", 1);
-                GenerateHourlySales("11:00:00", "11:59:59", 1);
-                GenerateHourlySales("12:00:00", "12:59:59", 1);
-                GenerateHourlySales("13:00:00", "13:59:59", 1);
-                GenerateHourlySales("14:00:00", "14:59:59", 1);
-                GenerateHourlySales("15:00:00", "15:59:59", 1);
-                GenerateHourlySales("16:00:00", "16:59:59", 1);
-                GenerateHourlySales("17:00:00", "17:59:59", 1);
-                GenerateHourlySales("18:00:00", "18:59:59", 1);
-                GenerateHourlySales("19:00:00", "19:59:59", 1);
-                GenerateHourlySales("20:00:00", "20:59:59", 1);
-                GenerateHourlySales("21:00:00", "21:59:59", 1);
-                GenerateHourlySales("22:00:00", "22:59:59", 1);
-                GenerateHourlySales("23:00:00", "23:59:59", 1);
+                ComputeHourlySales("00:00:00","00:59:59",1);
+                ComputeHourlySales("01:00:00", "01:59:59", 1);
+                ComputeHourlySales("02:00:00", "02:59:59", 1);
+                ComputeHourlySales("03:00:00", "03:59:59", 1);
+                ComputeHourlySales("04:00:00", "04:59:59", 1);
+                ComputeHourlySales("05:00:00", "05:59:59", 1);
+                ComputeHourlySales("06:00:00", "06:59:59", 1);
+                ComputeHourlySales("07:00:00", "07:59:59", 1);
+                ComputeHourlySales("08:00:00", "08:59:59", 1);
+                ComputeHourlySales("09:00:00", "09:59:59", 1);
+                ComputeHourlySales("10:00:00", "10:59:59", 1);
+                ComputeHourlySales("11:00:00", "11:59:59", 1);
+                ComputeHourlySales("12:00:00", "12:59:59", 1);
+                ComputeHourlySales("13:00:00", "13:59:59", 1);
+                ComputeHourlySales("14:00:00", "14:59:59", 1);
+                ComputeHourlySales("15:00:00", "15:59:59", 1);
+                ComputeHourlySales("16:00:00", "16:59:59", 1);
+                ComputeHourlySales("17:00:00", "17:59:59", 1);
+                ComputeHourlySales("18:00:00", "18:59:59", 1);
+                ComputeHourlySales("19:00:00", "19:59:59", 1);
+                ComputeHourlySales("20:00:00", "20:59:59", 1);
+                ComputeHourlySales("21:00:00", "21:59:59", 1);
+                ComputeHourlySales("22:00:00", "22:59:59", 1);
+                ComputeHourlySales("23:00:00", "23:59:59", 1);
                 //Write to file
                 //classWriteFile writeFile = new classWriteFile();
                 //writeFile.GenerateFile();
@@ -282,12 +290,12 @@ namespace Ayala_Interface_dotNet.ClassCon
                                      
             //New Grand Total
             dbNewGT = dbOldGT + dbTotalDlySales + dbTotalVat;
-            GenerateFile();
+            GenerateDailyFile();
             //classWriteFile.GenerateFile(dbDateStart);
             
         }
 
-        public void GenerateHourlySales(string startHour, string endHours, Int16 strTerminal)
+        public void ComputeHourlySales(string startHour, string endHours, Int16 strTerminal)
         {
    
             RMQueries("SELECT Sum(Total + Taxes) FROM SLS" + repMonth + repYear + ".DBF WHERE Session_No = " + sessNo +
@@ -299,21 +307,65 @@ namespace Ayala_Interface_dotNet.ClassCon
                      "AND Open_Time >= '" + startHour + "' AND Open_Time <= '" + endHours + "' AND Settle_stn = " + strTerminal);
             dbhrlyTotalTransaction = ReturnData(rdr[0].ToString());
 
+            GenerateHourlyFile("00:00");
+            GenerateHourlyFile("01:00");
+            GenerateHourlyFile("02:00");
+            GenerateHourlyFile("03:00");
+            GenerateHourlyFile("04:00");
+            GenerateHourlyFile("05:00");
+            GenerateHourlyFile("06:00");
+            GenerateHourlyFile("07:00");
+            GenerateHourlyFile("08:00");
+            GenerateHourlyFile("09:00");
+            GenerateHourlyFile("10:00");
+            GenerateHourlyFile("11:00");
+            GenerateHourlyFile("12:00");
+            GenerateHourlyFile("13:00");
+            GenerateHourlyFile("14:00");
+            GenerateHourlyFile("15:00");
+            GenerateHourlyFile("16:00");
+            GenerateHourlyFile("17:00");
+            GenerateHourlyFile("18:00");
+            GenerateHourlyFile("19:00");
+            GenerateHourlyFile("20:00");
+            GenerateHourlyFile("21:00");
+            GenerateHourlyFile("22:00");
+            GenerateHourlyFile("23:00");
+
         }
+
         #endregion
 
         #region "Write Files"
 
-        public void GenerateFile()
+        public void GenerateDailyFile()
         {
             TemplateConnection();
-            
             DBFQuery("INSERT INTO Daily VALUES ('" + dbDateStart + "'," + dbOldGT + "," + dbNewGT + "," + dbTotalDlySales + "," + dbTotalDiscount + "," + dbTotalREF + "," + dbTotalCAN + "," + dbTotalVat + ",'" + tenantName + "'," + bill_startINV + "," + bill_endINV + "," + bill_start + "," + bill_end + "," + dbTotalTransaction + "," + dbLocalTax + "," + dbServiceCharge + "," + dbNoTaxSales + "," + dbTotalRawGross + "," + dbLocalTax + "," + dbTotalOthers + "," + TerminalNumber + ")");
-
+            TemplateConnectionClose();
+        }
+        public void GenerateHourlyFile(string hours)
+        {
+            TemplateConnection();
+            DBFQuery("INSERT INTO Hourly Values ('" + dbDateStart + "','" + hours +"', " + dbhrlySales + ", " + dbhrlyTotalTransaction +  ",'" + tenantName + "'," + TerminalNumber + ")");
             TemplateConnectionClose();
         }
 
         #endregion  
+
+        #region "SavingFile"
+
+        public void CopyFileToAyalaFolder()
+        {
+           
+            fileNamePath = System.IO.Directory.GetCurrentDirectory() + "\\Template\\";
+            hourlyPath = "hourly.DBF";
+            distinationFileName = tenantCode + DateTime.Now.ToString ("yydd") + "H" + ".DBF";
+            sourceFile = System.IO.Path.Combine(fileNamePath,hourlyPath);
+            //distinationFolder = System.IO.Path.Combine(ayalaFolderPath, distinationFileName);
+            File.Copy(ayalaFolderPath, sourceFile);
+        }
+        #endregion
 
     }
 }
