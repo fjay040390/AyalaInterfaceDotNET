@@ -37,10 +37,10 @@ namespace Ayala_Interface_dotNet.ClassCon
 
         public string fileNamePath { get; set; }
         public string distinationFolder { get; set; }
-        public string distinationFileName { get; set; }
         public string hourlyPath { get; set; }
-        public string sourceFile { get; set; }
-        public string targetFile { get; set; }
+        public string dailyPath { get; set; }
+        public string distinationFileName { get; set; }
+
         #endregion
 
         #region "Properties for Computation"
@@ -113,29 +113,53 @@ namespace Ayala_Interface_dotNet.ClassCon
                 ComputeDailySales(1);
                 //Get Hourly Sales                
                 ComputeHourlySales("00:00:00","00:59:59",1);
+                GenerateHourlyFile("0:00");
                 ComputeHourlySales("01:00:00", "01:59:59", 1);
+                GenerateHourlyFile("1:00");
                 ComputeHourlySales("02:00:00", "02:59:59", 1);
+                GenerateHourlyFile("2:00");
                 ComputeHourlySales("03:00:00", "03:59:59", 1);
+                GenerateHourlyFile("3:00");
                 ComputeHourlySales("04:00:00", "04:59:59", 1);
+                GenerateHourlyFile("4:00");
                 ComputeHourlySales("05:00:00", "05:59:59", 1);
+                GenerateHourlyFile("5:00");
                 ComputeHourlySales("06:00:00", "06:59:59", 1);
+                GenerateHourlyFile("6:00");
                 ComputeHourlySales("07:00:00", "07:59:59", 1);
+                GenerateHourlyFile("7:00");
                 ComputeHourlySales("08:00:00", "08:59:59", 1);
+                GenerateHourlyFile("8:00");
                 ComputeHourlySales("09:00:00", "09:59:59", 1);
+                GenerateHourlyFile("9:00");
                 ComputeHourlySales("10:00:00", "10:59:59", 1);
+                GenerateHourlyFile("10:00");
                 ComputeHourlySales("11:00:00", "11:59:59", 1);
+                GenerateHourlyFile("11:00");
                 ComputeHourlySales("12:00:00", "12:59:59", 1);
+                GenerateHourlyFile("12:00");
                 ComputeHourlySales("13:00:00", "13:59:59", 1);
+                GenerateHourlyFile("13:00");
                 ComputeHourlySales("14:00:00", "14:59:59", 1);
+                GenerateHourlyFile("14:00");
                 ComputeHourlySales("15:00:00", "15:59:59", 1);
+                GenerateHourlyFile("15:00");
                 ComputeHourlySales("16:00:00", "16:59:59", 1);
+                GenerateHourlyFile("16:00");
                 ComputeHourlySales("17:00:00", "17:59:59", 1);
+                GenerateHourlyFile("17:00");
                 ComputeHourlySales("18:00:00", "18:59:59", 1);
+                GenerateHourlyFile("18:00");
                 ComputeHourlySales("19:00:00", "19:59:59", 1);
+                GenerateHourlyFile("19:00");
                 ComputeHourlySales("20:00:00", "20:59:59", 1);
+                GenerateHourlyFile("20:00");
                 ComputeHourlySales("21:00:00", "21:59:59", 1);
+                GenerateHourlyFile("21:00");
                 ComputeHourlySales("22:00:00", "22:59:59", 1);
+                GenerateHourlyFile("22:00");
                 ComputeHourlySales("23:00:00", "23:59:59", 1);
+                GenerateHourlyFile("23:00");
                 //Write to file
                 //classWriteFile writeFile = new classWriteFile();
                 //writeFile.GenerateFile();
@@ -144,6 +168,8 @@ namespace Ayala_Interface_dotNet.ClassCon
                 //Disconnect to DB
                 rmDisconnect();
             } while (strDate <= endDate);
+            CopyFileHourlyToAyalaFolder();
+            CopyFileDailyToAyalaFolder();
         }
         #endregion
 
@@ -204,7 +230,7 @@ namespace Ayala_Interface_dotNet.ClassCon
         //To check if data from database is empty, return 0. 
         public double ReturnData(string param)
         {
-            if (param != "")
+             if (param != "")
             {
                 return Convert.ToDouble(param);
             }
@@ -306,32 +332,6 @@ namespace Ayala_Interface_dotNet.ClassCon
             RMQueries("SELECT Count(bill_no)FROM SLS" + repMonth + repYear + ".DBF WHERE Session_no = " + sessNo +
                      "AND Open_Time >= '" + startHour + "' AND Open_Time <= '" + endHours + "' AND Settle_stn = " + strTerminal);
             dbhrlyTotalTransaction = ReturnData(rdr[0].ToString());
-
-            GenerateHourlyFile("00:00");
-            GenerateHourlyFile("01:00");
-            GenerateHourlyFile("02:00");
-            GenerateHourlyFile("03:00");
-            GenerateHourlyFile("04:00");
-            GenerateHourlyFile("05:00");
-            GenerateHourlyFile("06:00");
-            GenerateHourlyFile("07:00");
-            GenerateHourlyFile("08:00");
-            GenerateHourlyFile("09:00");
-            GenerateHourlyFile("10:00");
-            GenerateHourlyFile("11:00");
-            GenerateHourlyFile("12:00");
-            GenerateHourlyFile("13:00");
-            GenerateHourlyFile("14:00");
-            GenerateHourlyFile("15:00");
-            GenerateHourlyFile("16:00");
-            GenerateHourlyFile("17:00");
-            GenerateHourlyFile("18:00");
-            GenerateHourlyFile("19:00");
-            GenerateHourlyFile("20:00");
-            GenerateHourlyFile("21:00");
-            GenerateHourlyFile("22:00");
-            GenerateHourlyFile("23:00");
-
         }
 
         #endregion
@@ -344,26 +344,35 @@ namespace Ayala_Interface_dotNet.ClassCon
             DBFQuery("INSERT INTO Daily VALUES ('" + dbDateStart + "'," + dbOldGT + "," + dbNewGT + "," + dbTotalDlySales + "," + dbTotalDiscount + "," + dbTotalREF + "," + dbTotalCAN + "," + dbTotalVat + ",'" + tenantName + "'," + bill_startINV + "," + bill_endINV + "," + bill_start + "," + bill_end + "," + dbTotalTransaction + "," + dbLocalTax + "," + dbServiceCharge + "," + dbNoTaxSales + "," + dbTotalRawGross + "," + dbLocalTax + "," + dbTotalOthers + "," + TerminalNumber + ")");
             TemplateConnectionClose();
         }
-        public void GenerateHourlyFile(string hours)
+        public void GenerateHourlyFile(string startHour)
         {
             TemplateConnection();
-            DBFQuery("INSERT INTO Hourly Values ('" + dbDateStart + "','" + hours +"', " + dbhrlySales + ", " + dbhrlyTotalTransaction +  ",'" + tenantName + "'," + TerminalNumber + ")");
+            DBFQuery("INSERT INTO Hourly Values ('" + dbDateStart + "','" + startHour + "', " + dbhrlySales + ", " + dbhrlyTotalTransaction +  ",'" + tenantName + "'," + TerminalNumber + ")");
             TemplateConnectionClose();
+         
         }
 
         #endregion  
 
-        #region "SavingFile"
+        #region "CopyToAyala"
 
-        public void CopyFileToAyalaFolder()
+        public void CopyFileHourlyToAyalaFolder()
         {
-           
             fileNamePath = System.IO.Directory.GetCurrentDirectory() + "\\Template\\";
             hourlyPath = "hourly.DBF";
-            distinationFileName = tenantCode + DateTime.Now.ToString ("yydd") + "H" + ".DBF";
-            sourceFile = System.IO.Path.Combine(fileNamePath,hourlyPath);
-            //distinationFolder = System.IO.Path.Combine(ayalaFolderPath, distinationFileName);
-            File.Copy(ayalaFolderPath, sourceFile);
+            distinationFileName = tenantCode + DateTime.Now.ToString("yydd") + "H" + ".DBF";
+            string sourceFile = System.IO.Path.Combine(fileNamePath, hourlyPath);
+            string destFile = System.IO.Path.Combine(ayalaFolderPath, distinationFileName);
+            System.IO.File.Copy(sourceFile, destFile, true);
+        }
+        public void CopyFileDailyToAyalaFolder()
+        {
+            fileNamePath = System.IO.Directory.GetCurrentDirectory() + "\\Template\\";
+            dailyPath = "daily.DBF";
+           distinationFileName = tenantCode + DateTime.Now.ToString("yydd") + ".DBF";
+            string sourceFile = System.IO.Path.Combine(fileNamePath, dailyPath);
+            string destFile = System.IO.Path.Combine(ayalaFolderPath, distinationFileName);
+            System.IO.File.Copy(sourceFile, destFile, true);
         }
         #endregion
 

@@ -1,5 +1,6 @@
-C:\Users\FrancisJay\Documents\GitHub\AyalaInterfaceDotNET\Ayala Interface dotNet\bin\x86\Debug\Ayala Interface dotNet.exe
 C:\Users\FrancisJay\Documents\GitHub\AyalaInterfaceDotNET\Ayala Interface dotNet\bin\x86\Debug\Ayala Interface dotNet.exe.config
+C:\Users\FrancisJay\Documents\GitHub\AyalaInterfaceDotNET\Ayala Interface dotNet\bin\x86\Debug\Ayala Interface dotNet.exe
+C:\Users\FrancisJay\Documents\GitHub\AyalaInterfaceDotNET\Ayala Interface dotNet\bin\x86\Debug\Ayala Interface dotNet.pdb
 C:\Users\FrancisJay\Documents\GitHub\AyalaInterfaceDotNET\Ayala Interface dotNet\obj\x86\Debug\Ayala_Interface_dotNet.frmConfig.resources
 C:\Users\FrancisJay\Documents\GitHub\AyalaInterfaceDotNET\Ayala Interface dotNet\obj\x86\Debug\Ayala_Interface_dotNet.frmLogin.resources
 C:\Users\FrancisJay\Documents\GitHub\AyalaInterfaceDotNET\Ayala Interface dotNet\obj\x86\Debug\Ayala_Interface_dotNet.frmPrint.resources
@@ -9,5 +10,4 @@ C:\Users\FrancisJay\Documents\GitHub\AyalaInterfaceDotNET\Ayala Interface dotNet
 C:\Users\FrancisJay\Documents\GitHub\AyalaInterfaceDotNET\Ayala Interface dotNet\obj\x86\Debug\Ayala Interface dotNet.csproj.GenerateResource.Cache
 C:\Users\FrancisJay\Documents\GitHub\AyalaInterfaceDotNET\Ayala Interface dotNet\obj\x86\Debug\Ayala Interface dotNet.exe
 C:\Users\FrancisJay\Documents\GitHub\AyalaInterfaceDotNET\Ayala Interface dotNet\obj\x86\Debug\Ayala Interface dotNet.pdb
-C:\Users\FrancisJay\Documents\GitHub\AyalaInterfaceDotNET\Ayala Interface dotNet\bin\x86\Debug\Ayala Interface dotNet.pdb
 C:\Users\FrancisJay\Documents\GitHub\AyalaInterfaceDotNET\Ayala Interface dotNet\obj\x86\Debug\Ayala Interface dotNet.csprojResolveAssemblyReference.cache
