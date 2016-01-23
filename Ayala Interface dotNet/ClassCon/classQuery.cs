@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Data;
 using System.Data.OleDb;
 namespace Ayala_Interface_dotNet.ClassCon
@@ -16,14 +17,18 @@ namespace Ayala_Interface_dotNet.ClassCon
         public string tenantCode { get; set; }
         public string tenantContract { get; set; }
         public string ayalaFolder { get; set; }
+        public string currentYear { get; set; }
+        public string ayalaFolderPath { get; set; }
 
         public DataTable dtTax { get; set; }
         public DataTable dtDiscount { get; set; }
         public DataTable dtLessVAT { get; set; }
 
+        public bool FolderExist { get; set; }
+
         #endregion
 
-       #region "Queries Command"
+        #region "Queries Command"
         
         //get loginDetailsForLoginForm
         public void GetLoginDetails()
@@ -92,6 +97,19 @@ namespace Ayala_Interface_dotNet.ClassCon
             cmd.ExecuteNonQuery();
         }
         #endregion
-         
+
+        #region "check if follder exist"
+
+        public void CheckFolderAyala()
+        {
+            currentYear = DateTime.Today.ToString("yyyy");
+            if (!Directory.Exists(ayalaFolder + currentYear))
+            {
+                Directory.CreateDirectory(ayalaFolder + currentYear);
+            }
+            ayalaFolderPath = ayalaFolder + currentYear;
+        }
+        #endregion
+
     }
 }

@@ -23,7 +23,9 @@ namespace Ayala_Interface_dotNet
             classReprocess.dateStart = lblStart.Text;
             classReprocess.dateEnd = lblEnd.Text;
             classReprocess.FilterDate();
+            classReprocess.CopyFileToAyalaFolder();
             MessageBox.Show("Process Complete!");
+            
         }
 
         private void monthStart_DateChanged(object sender, DateRangeEventArgs e)
