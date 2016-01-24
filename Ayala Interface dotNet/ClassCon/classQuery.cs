@@ -25,6 +25,7 @@ namespace Ayala_Interface_dotNet.ClassCon
         public DataTable dtLessVAT { get; set; }
 
         public bool FolderExist { get; set; }
+        public bool attributeFolder { get; set; }
 
         #endregion
 
@@ -103,11 +104,13 @@ namespace Ayala_Interface_dotNet.ClassCon
         public void CheckFolderAyala()
         {
             currentYear = DateTime.Today.ToString("yyyy");
-            if (!Directory.Exists(ayalaFolder + currentYear))
-            {
-                Directory.CreateDirectory(ayalaFolder + currentYear);
-            }
             ayalaFolderPath = ayalaFolder + currentYear;
+            if (!Directory.Exists(ayalaFolderPath))
+            {
+                Directory.CreateDirectory(ayalaFolderPath);
+            }
+            
+            
         }
         #endregion
 
