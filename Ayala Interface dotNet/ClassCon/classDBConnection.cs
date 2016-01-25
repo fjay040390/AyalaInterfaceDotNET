@@ -1,7 +1,5 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using System.Data.OleDb;
-using System.Configuration;
 
 
 namespace Ayala_Interface_dotNet.ClassCon
@@ -19,6 +17,8 @@ namespace Ayala_Interface_dotNet.ClassCon
          public OleDbDataAdapter daTax;
          public OleDbDataAdapter daDiscount;
          public OleDbDataAdapter daLessVAT;
+         public OleDbDataAdapter daDiplomat;
+         public OleDbDataAdapter daDeleteRecords;
          public OleDbCommandBuilder cmdb;
          
          public string rmPath { get; set; }
@@ -64,9 +64,9 @@ namespace Ayala_Interface_dotNet.ClassCon
              }
          }
 
-         public void TemplateConnection()
+         public void TemplateConnection(string filePath)
          {
-             tempPath = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=|DataDirectory|Template;Extended Properties=dBASE IV;User ID=Admin;Password=;";
+             tempPath = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + filePath + ";Extended Properties=dBASE IV;User ID=Admin;Password=;";
              tempCon = new OleDbConnection(tempPath);
              if (tempCon.State == ConnectionState.Closed)
              {
@@ -113,6 +113,15 @@ namespace Ayala_Interface_dotNet.ClassCon
              rdr.Read();
          }
 
+         public void GTQueries(string sql)
+         {
+             //Open Connection
+             openConnection();
+             //Fire Query
+             cmd = new OleDbCommand(sql, con);
+             rdr = cmd.ExecuteReader();
+         }
+
          public void RMQueries(string sql)
          {
              //rmConnect();
@@ -145,13 +154,20 @@ namespace Ayala_Interface_dotNet.ClassCon
              daLessVAT = new OleDbDataAdapter(sql, con);
          }
          
+         public void LoadDataGridViewDiplomat(string sql)
+         {
+             daDiplomat = new OleDbDataAdapter();
+             openConnection();
+             daDiplomat = new OleDbDataAdapter(sql, con);
+         }
+
          //execute computation to dbf query
          public void DBFQuery (string sql)
          {
              cmd = new OleDbCommand(sql, tempCon);
              cmd.ExecuteNonQuery();
          }
-
+      
          #endregion
               
      }

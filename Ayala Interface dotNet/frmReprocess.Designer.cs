@@ -30,9 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmReprocess));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.lblDateStatus = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.pbProgress = new System.Windows.Forms.ProgressBar();
             this.lblEnd = new System.Windows.Forms.Label();
             this.lblStart = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -45,9 +42,6 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.lblDateStatus);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.pbProgress);
             this.groupBox1.Controls.Add(this.lblEnd);
             this.groupBox1.Controls.Add(this.lblStart);
             this.groupBox1.Controls.Add(this.label2);
@@ -57,35 +51,9 @@
             this.groupBox1.Controls.Add(this.btnReprocess);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(488, 309);
+            this.groupBox1.Size = new System.Drawing.Size(488, 271);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            // 
-            // lblDateStatus
-            // 
-            this.lblDateStatus.AutoSize = true;
-            this.lblDateStatus.ForeColor = System.Drawing.Color.Blue;
-            this.lblDateStatus.Location = new System.Drawing.Point(74, 209);
-            this.lblDateStatus.Name = "lblDateStatus";
-            this.lblDateStatus.Size = new System.Drawing.Size(65, 13);
-            this.lblDateStatus.TabIndex = 10;
-            this.lblDateStatus.Text = "00/00/0000";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 209);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(62, 13);
-            this.label3.TabIndex = 9;
-            this.label3.Text = "Generating:";
-            // 
-            // pbProgress
-            // 
-            this.pbProgress.Location = new System.Drawing.Point(9, 227);
-            this.pbProgress.Name = "pbProgress";
-            this.pbProgress.Size = new System.Drawing.Size(472, 23);
-            this.pbProgress.TabIndex = 8;
             // 
             // lblEnd
             // 
@@ -143,7 +111,7 @@
             this.btnReprocess.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Lime;
             this.btnReprocess.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Aqua;
             this.btnReprocess.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReprocess.Location = new System.Drawing.Point(343, 256);
+            this.btnReprocess.Location = new System.Drawing.Point(343, 212);
             this.btnReprocess.Name = "btnReprocess";
             this.btnReprocess.Size = new System.Drawing.Size(139, 47);
             this.btnReprocess.TabIndex = 1;
@@ -155,7 +123,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(508, 333);
+            this.ClientSize = new System.Drawing.Size(508, 294);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -180,8 +148,5 @@
         private System.Windows.Forms.MonthCalendar monthEnd;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.MonthCalendar monthStart;
-        private System.Windows.Forms.Label lblDateStatus;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ProgressBar pbProgress;
     }
 }

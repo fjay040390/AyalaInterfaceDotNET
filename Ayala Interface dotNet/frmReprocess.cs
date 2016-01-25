@@ -23,7 +23,6 @@ namespace Ayala_Interface_dotNet
             classReprocess.dateStart = lblStart.Text;
             classReprocess.dateEnd = lblEnd.Text;
             classReprocess.FilterDate();
-            classReprocess.CopyFileHourlyToAyalaFolder();
             MessageBox.Show("Process Complete!");
             
         }
@@ -38,27 +37,9 @@ namespace Ayala_Interface_dotNet
             lblEnd.Text = monthEnd.SelectionStart.ToShortDateString();
         }
 
-        #region "Properties"
-
-        public string lblReprocessDate 
-        { 
-            get { return this.lblDateStatus.Text; } 
-            set { this.lblDateStatus.Text = value; }
-        }
-
-        public int intReprocessValue 
-        {
-            get { return this.pbProgress.Value; }
-            set { this.pbProgress.Value = value; }
-        }
-
-        #endregion  
-
         private void lblStart_Click(object sender, EventArgs e)
         {
 
         }
-
-      
     }
 }

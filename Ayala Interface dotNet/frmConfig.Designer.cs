@@ -57,14 +57,19 @@
             this.btnBrowseRM = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.browseRM = new System.Windows.Forms.FolderBrowserDialog();
+            this.dgwDiplomat = new System.Windows.Forms.DataGridView();
+            this.label12 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgwLessVAT)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgwDiscountNonVat)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgwTaxTable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgwDiplomat)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.dgwDiplomat);
+            this.groupBox1.Controls.Add(this.label12);
             this.groupBox1.Controls.Add(this.browseAyala);
             this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.txtAyalaFolder);
@@ -93,7 +98,7 @@
             this.groupBox1.Controls.Add(this.btnSave);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(816, 453);
+            this.groupBox1.Size = new System.Drawing.Size(1042, 453);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
@@ -230,7 +235,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(584, 44);
+            this.label4.Location = new System.Drawing.Point(579, 48);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(81, 13);
             this.label4.TabIndex = 11;
@@ -238,7 +243,7 @@
             // 
             // txtUserPass
             // 
-            this.txtUserPass.Location = new System.Drawing.Point(671, 41);
+            this.txtUserPass.Location = new System.Drawing.Point(666, 45);
             this.txtUserPass.MaxLength = 4;
             this.txtUserPass.Name = "txtUserPass";
             this.txtUserPass.PasswordChar = '*';
@@ -249,7 +254,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(577, 18);
+            this.label5.Location = new System.Drawing.Point(572, 22);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(88, 13);
             this.label5.TabIndex = 9;
@@ -257,7 +262,7 @@
             // 
             // txtAdminPass
             // 
-            this.txtAdminPass.Location = new System.Drawing.Point(671, 15);
+            this.txtAdminPass.Location = new System.Drawing.Point(666, 19);
             this.txtAdminPass.MaxLength = 4;
             this.txtAdminPass.Name = "txtAdminPass";
             this.txtAdminPass.PasswordChar = '*';
@@ -334,7 +339,7 @@
             this.btnSave.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Lime;
             this.btnSave.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Aqua;
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSave.Location = new System.Drawing.Point(656, 84);
+            this.btnSave.Location = new System.Drawing.Point(651, 88);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(139, 47);
             this.btnSave.TabIndex = 0;
@@ -342,13 +347,30 @@
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
+            // dgwDiplomat
+            // 
+            this.dgwDiplomat.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgwDiplomat.Location = new System.Drawing.Point(796, 204);
+            this.dgwDiplomat.Name = "dgwDiplomat";
+            this.dgwDiplomat.Size = new System.Drawing.Size(235, 243);
+            this.dgwDiplomat.TabIndex = 27;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(793, 188);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(78, 13);
+            this.label12.TabIndex = 26;
+            this.label12.Text = "Diplomat Table";
+            // 
             // frmConfig
             // 
             this.AcceptButton = this.btnSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(840, 477);
+            this.ClientSize = new System.Drawing.Size(1062, 477);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -363,6 +385,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgwLessVAT)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgwDiscountNonVat)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgwTaxTable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgwDiplomat)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -397,5 +420,7 @@
         private System.Windows.Forms.Button browseAyala;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox txtAyalaFolder;
+        private System.Windows.Forms.DataGridView dgwDiplomat;
+        private System.Windows.Forms.Label label12;
     }
 }

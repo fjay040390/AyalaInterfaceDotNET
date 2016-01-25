@@ -23,6 +23,7 @@ namespace Ayala_Interface_dotNet.ClassCon
         public DataTable dtTax { get; set; }
         public DataTable dtDiscount { get; set; }
         public DataTable dtLessVAT { get; set; }
+        public DataTable dtDiplomat { get; set; }
 
         public bool FolderExist { get; set; }
         public bool attributeFolder { get; set; }
@@ -84,6 +85,14 @@ namespace Ayala_Interface_dotNet.ClassCon
             dtLessVAT = new DataTable();
             daLessVAT.Fill(dtLessVAT);
         }
+
+        //loadRMDiplomat
+        public void LoadDiplomat()
+        {
+            LoadDataGridViewDiplomat("SELECT DscMap as ID , DscDiplomat as PLU FROM tblRMDiplomat");
+            dtDiplomat = new DataTable();
+            daDiplomat.Fill(dtDiplomat);
+        }
         #endregion
 
         #region "Save queries"
@@ -101,17 +110,15 @@ namespace Ayala_Interface_dotNet.ClassCon
 
         #region "check if follder exist"
 
-        public void CheckFolderAyala()
+        public void CheckFolderAyala(string currentYear)
         {
-            currentYear = DateTime.Today.ToString("yyyy");
-            ayalaFolderPath = ayalaFolder + currentYear;
-            if (!Directory.Exists(ayalaFolderPath))
+            //currentYear = DateTime.Today.ToString("yyyy");
+            if (!Directory.Exists(ayalaFolder + "\\" + currentYear))
             {
-                Directory.CreateDirectory(ayalaFolderPath);
-            }
-            
-            
+                Directory.CreateDirectory(ayalaFolder + "\\" + currentYear);
+            }          
         }
+
         #endregion
 
     }

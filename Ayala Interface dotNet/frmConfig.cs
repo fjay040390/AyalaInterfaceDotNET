@@ -46,6 +46,12 @@ namespace Ayala_Interface_dotNet
             dgwLessVAT.Columns[0].Width = 70;
             dgwLessVAT.Columns[1].Width = 70;
             classQuery.dtLessVAT.Dispose();
+
+            classQuery.LoadDiplomat();
+            dgwDiplomat.DataSource = classQuery.dtDiplomat;
+            dgwDiplomat.Columns[0].Width = 70;
+            dgwDiplomat.Columns[1].Width = 70;
+            classQuery.dtDiplomat.Dispose();
         }
 
         #endregion
@@ -73,6 +79,9 @@ namespace Ayala_Interface_dotNet
             //save DataGridViewLessVAT
             cmdBuild = new OleDbCommandBuilder(classQuery.daLessVAT);
             classQuery.daLessVAT.Update(classQuery.dtLessVAT);
+            //save DataGridViewDiplomat
+            cmdBuild = new OleDbCommandBuilder(classQuery.daDiplomat);
+            classQuery.daDiplomat.Update(classQuery.dtDiplomat);
             MessageBox.Show("Update successful!");
             this.Dispose();
         }
