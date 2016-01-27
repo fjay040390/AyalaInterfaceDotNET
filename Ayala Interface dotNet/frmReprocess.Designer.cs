@@ -130,8 +130,10 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmReprocess";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Reprocess File";
+            this.Load += new System.EventHandler(this.frmReprocess_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);

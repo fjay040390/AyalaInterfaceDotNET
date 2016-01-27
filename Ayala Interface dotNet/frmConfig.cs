@@ -15,6 +15,7 @@ namespace Ayala_Interface_dotNet
         }
 
         #region "Load Data to Config"
+
         private void frmConfig_Load(object sender, EventArgs e)
         {
            //loadData
@@ -52,6 +53,11 @@ namespace Ayala_Interface_dotNet
             dgwDiplomat.Columns[0].Width = 70;
             dgwDiplomat.Columns[1].Width = 70;
             classQuery.dtDiplomat.Dispose();
+
+            classQuery.LoadTerminal();
+            dgwTerminal.DataSource = classQuery.dtTerminal;
+            dgwDiplomat.Columns[0].Width = 70;
+            classQuery.dtTerminal.Dispose();
         }
 
         #endregion
@@ -82,6 +88,9 @@ namespace Ayala_Interface_dotNet
             //save DataGridViewDiplomat
             cmdBuild = new OleDbCommandBuilder(classQuery.daDiplomat);
             classQuery.daDiplomat.Update(classQuery.dtDiplomat);
+            //save DataGridViewTerminal
+            cmdBuild = new OleDbCommandBuilder(classQuery.daTerminal);
+            classQuery.daTerminal.Update(classQuery.dtTerminal);
             MessageBox.Show("Update successful!");
             this.Dispose();
         }
