@@ -30,6 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmConfig));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.dgwDiplomat = new System.Windows.Forms.DataGridView();
+            this.label12 = new System.Windows.Forms.Label();
             this.browseAyala = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.txtAyalaFolder = new System.Windows.Forms.TextBox();
@@ -57,17 +59,20 @@
             this.btnBrowseRM = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.browseRM = new System.Windows.Forms.FolderBrowserDialog();
-            this.dgwDiplomat = new System.Windows.Forms.DataGridView();
-            this.label12 = new System.Windows.Forms.Label();
+            this.dgwTerminal = new System.Windows.Forms.DataGridView();
+            this.label13 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgwDiplomat)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgwLessVAT)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgwDiscountNonVat)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgwTaxTable)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgwDiplomat)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgwTerminal)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.dgwTerminal);
+            this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.dgwDiplomat);
             this.groupBox1.Controls.Add(this.label12);
             this.groupBox1.Controls.Add(this.browseAyala);
@@ -101,6 +106,23 @@
             this.groupBox1.Size = new System.Drawing.Size(1042, 453);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
+            // 
+            // dgwDiplomat
+            // 
+            this.dgwDiplomat.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgwDiplomat.Location = new System.Drawing.Point(796, 204);
+            this.dgwDiplomat.Name = "dgwDiplomat";
+            this.dgwDiplomat.Size = new System.Drawing.Size(235, 243);
+            this.dgwDiplomat.TabIndex = 27;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(793, 188);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(78, 13);
+            this.label12.TabIndex = 26;
+            this.label12.Text = "Diplomat Table";
             // 
             // browseAyala
             // 
@@ -192,9 +214,9 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(311, 188);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(128, 13);
+            this.label8.Size = new System.Drawing.Size(87, 13);
             this.label8.TabIndex = 16;
-            this.label8.Text = "VAT Exempted Discounts";
+            this.label8.Text = "Senior Discounts";
             // 
             // dgwTaxTable
             // 
@@ -235,7 +257,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(579, 48);
+            this.label4.Location = new System.Drawing.Point(531, 44);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(81, 13);
             this.label4.TabIndex = 11;
@@ -243,7 +265,7 @@
             // 
             // txtUserPass
             // 
-            this.txtUserPass.Location = new System.Drawing.Point(666, 45);
+            this.txtUserPass.Location = new System.Drawing.Point(618, 41);
             this.txtUserPass.MaxLength = 4;
             this.txtUserPass.Name = "txtUserPass";
             this.txtUserPass.PasswordChar = '*';
@@ -254,7 +276,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(572, 22);
+            this.label5.Location = new System.Drawing.Point(524, 18);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(88, 13);
             this.label5.TabIndex = 9;
@@ -262,7 +284,7 @@
             // 
             // txtAdminPass
             // 
-            this.txtAdminPass.Location = new System.Drawing.Point(666, 19);
+            this.txtAdminPass.Location = new System.Drawing.Point(618, 15);
             this.txtAdminPass.MaxLength = 4;
             this.txtAdminPass.Name = "txtAdminPass";
             this.txtAdminPass.PasswordChar = '*';
@@ -339,30 +361,30 @@
             this.btnSave.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Lime;
             this.btnSave.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Aqua;
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSave.Location = new System.Drawing.Point(651, 88);
+            this.btnSave.Location = new System.Drawing.Point(618, 84);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(139, 47);
+            this.btnSave.Size = new System.Drawing.Size(124, 47);
             this.btnSave.TabIndex = 0;
             this.btnSave.Text = "&SAVE";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // dgwDiplomat
+            // dgwTerminal
             // 
-            this.dgwDiplomat.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgwDiplomat.Location = new System.Drawing.Point(796, 204);
-            this.dgwDiplomat.Name = "dgwDiplomat";
-            this.dgwDiplomat.Size = new System.Drawing.Size(235, 243);
-            this.dgwDiplomat.TabIndex = 27;
+            this.dgwTerminal.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgwTerminal.Location = new System.Drawing.Point(796, 29);
+            this.dgwTerminal.Name = "dgwTerminal";
+            this.dgwTerminal.Size = new System.Drawing.Size(235, 151);
+            this.dgwTerminal.TabIndex = 29;
             // 
-            // label12
+            // label13
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(793, 188);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(78, 13);
-            this.label12.TabIndex = 26;
-            this.label12.Text = "Diplomat Table";
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(793, 13);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(87, 13);
+            this.label13.TabIndex = 28;
+            this.label13.Text = "Terminal Number";
             // 
             // frmConfig
             // 
@@ -377,15 +399,17 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmConfig";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Interface Setup";
             this.Load += new System.EventHandler(this.frmConfig_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgwDiplomat)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgwLessVAT)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgwDiscountNonVat)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgwTaxTable)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgwDiplomat)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgwTerminal)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -422,5 +446,7 @@
         private System.Windows.Forms.TextBox txtAyalaFolder;
         private System.Windows.Forms.DataGridView dgwDiplomat;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.DataGridView dgwTerminal;
+        private System.Windows.Forms.Label label13;
     }
 }

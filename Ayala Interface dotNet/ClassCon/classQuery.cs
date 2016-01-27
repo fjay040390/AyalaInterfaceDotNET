@@ -24,6 +24,7 @@ namespace Ayala_Interface_dotNet.ClassCon
         public DataTable dtDiscount { get; set; }
         public DataTable dtLessVAT { get; set; }
         public DataTable dtDiplomat { get; set; }
+        public DataTable dtTerminal { get; set; }
 
         public bool FolderExist { get; set; }
         public bool attributeFolder { get; set; }
@@ -93,6 +94,15 @@ namespace Ayala_Interface_dotNet.ClassCon
             dtDiplomat = new DataTable();
             daDiplomat.Fill(dtDiplomat);
         }
+
+        //loadRMTerminal
+        public void LoadTerminal()
+        {
+            LoadDataGridViewTerminal("SELECT TerminalID as TerminalID FROM tblRMTerminal");
+            dtTerminal = new DataTable();
+            daTerminal.Fill(dtTerminal);
+        }
+
         #endregion
 
         #region "Save queries"

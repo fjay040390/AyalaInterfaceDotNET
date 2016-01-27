@@ -41,5 +41,11 @@ namespace Ayala_Interface_dotNet
         {
 
         }
+
+        private void frmReprocess_Load(object sender, EventArgs e)
+        {
+            lblStart.Text = monthStart.SelectionStart.ToShortDateString();
+            lblEnd.Text = monthEnd.SelectionStart.ToShortDateString();
+        }
     }
 }

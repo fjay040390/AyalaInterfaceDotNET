@@ -19,12 +19,15 @@ namespace Ayala_Interface_dotNet.ClassCon
          public OleDbDataAdapter daLessVAT;
          public OleDbDataAdapter daDiplomat;
          public OleDbDataAdapter daDeleteRecords;
+         public OleDbDataAdapter daTerminal;
+         public OleDbDataAdapter daGT; 
          public OleDbCommandBuilder cmdb;
          
          public string rmPath { get; set; }
          public string mdbPath;
          public string tempPath;
-        
+
+         public DataTable dtGrandTotal { get; set; }
          #endregion
 
          #region "Connection Routine"
@@ -113,15 +116,6 @@ namespace Ayala_Interface_dotNet.ClassCon
              rdr.Read();
          }
 
-         public void GTQueries(string sql)
-         {
-             //Open Connection
-             openConnection();
-             //Fire Query
-             cmd = new OleDbCommand(sql, con);
-             rdr = cmd.ExecuteReader();
-         }
-
          public void RMQueries(string sql)
          {
              //rmConnect();
@@ -129,7 +123,6 @@ namespace Ayala_Interface_dotNet.ClassCon
              cmd = new OleDbCommand(sql, rmCon);
              rdr = cmd.ExecuteReader();
              rdr.Read();
-             
          }
   
          //execute datagridview query
@@ -159,6 +152,24 @@ namespace Ayala_Interface_dotNet.ClassCon
              daDiplomat = new OleDbDataAdapter();
              openConnection();
              daDiplomat = new OleDbDataAdapter(sql, con);
+         }
+
+         public void LoadDataGridViewTerminal(string sql)
+         {
+             daTerminal = new OleDbDataAdapter();
+             openConnection();
+             daTerminal = new OleDbDataAdapter(sql, con);
+         }
+
+         public void LoadOldGrandTotal(string sql)
+         {
+             daGT = new OleDbDataAdapter();
+             //Open Connection
+             openConnection();
+             //Fire Query
+             daGT = new OleDbDataAdapter(sql, con);
+             dtGrandTotal = new DataTable();
+             daGT.Fill(dtGrandTotal);
          }
 
          //execute computation to dbf query
