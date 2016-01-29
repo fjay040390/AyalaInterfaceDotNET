@@ -134,28 +134,11 @@ namespace Ayala_Interface_dotNet.ClassCon
                 
                 foreach (DataRow row in dtTerminal.Rows)
                 {
+                    //terminal 1
                     strTerminalID = Convert.ToInt16(row[0].ToString());
                     //Get Sales
                     ComputeDailySales(strTerminalID);
                     //Get Hourly Sales
-                    ComputeHourlySales("00:00:00", "00:59:59", strTerminalID);
-                    GenerateHourlyDBFFile("0:00", dbfFileName);
-                    GenerateHourlyTextFile("0:00");
-                    ComputeHourlySales("01:00:00", "01:59:59", strTerminalID);
-                    GenerateHourlyDBFFile("1:00", dbfFileName);
-                    GenerateHourlyTextFile("1:00");
-                    ComputeHourlySales("02:00:00", "02:59:59", strTerminalID);
-                    GenerateHourlyDBFFile("2:00", dbfFileName);
-                    GenerateHourlyTextFile("2:00");
-                    ComputeHourlySales("03:00:00", "03:59:59", strTerminalID);
-                    GenerateHourlyDBFFile("3:00", dbfFileName);
-                    GenerateHourlyTextFile("3:00");
-                    ComputeHourlySales("04:00:00", "04:59:59", strTerminalID);
-                    GenerateHourlyDBFFile("4:00", dbfFileName);
-                    GenerateHourlyTextFile("4:00");
-                    ComputeHourlySales("05:00:00", "05:59:59", strTerminalID);
-                    GenerateHourlyDBFFile("5:00", dbfFileName);
-                    GenerateHourlyTextFile("5:00");
                     ComputeHourlySales("06:00:00", "06:59:59", strTerminalID);
                     GenerateHourlyDBFFile("6:00", dbfFileName);
                     GenerateHourlyTextFile("6:00");
@@ -210,10 +193,29 @@ namespace Ayala_Interface_dotNet.ClassCon
                     ComputeHourlySales("23:00:00", "23:59:59", strTerminalID);
                     GenerateHourlyDBFFile("23:00", dbfFileName);
                     GenerateHourlyTextFile("23:00");
+                    ComputeHourlySales("00:00:00", "00:59:59", strTerminalID);
+                    GenerateHourlyDBFFile("0:00", dbfFileName);
+                    GenerateHourlyTextFile("0:00");
+                    ComputeHourlySales("01:00:00", "01:59:59", strTerminalID);
+                    GenerateHourlyDBFFile("1:00", dbfFileName);
+                    GenerateHourlyTextFile("1:00");
+                    ComputeHourlySales("02:00:00", "02:59:59", strTerminalID);
+                    GenerateHourlyDBFFile("2:00", dbfFileName);
+                    GenerateHourlyTextFile("2:00");
+                    ComputeHourlySales("03:00:00", "03:59:59", strTerminalID);
+                    GenerateHourlyDBFFile("3:00", dbfFileName);
+                    GenerateHourlyTextFile("3:00");
+                    ComputeHourlySales("04:00:00", "04:59:59", strTerminalID);
+                    GenerateHourlyDBFFile("4:00", dbfFileName);
+                    GenerateHourlyTextFile("4:00");
+                    ComputeHourlySales("05:00:00", "05:59:59", strTerminalID);
+                    GenerateHourlyDBFFile("5:00", dbfFileName);
+                    GenerateHourlyTextFile("5:00");                
                 }
+            
                 hourlyTextfile.Close();
                 dailyTextfile.Close();
-                //Write Report
+                //Write Report5
                 GenerateDailyReport(printerPath, "Report " + strDate.ToString("MM-dd-yyyy") + ".spl");
                 //Add 1 day to loop
                 strDate = strDate.AddDays(1);
@@ -349,7 +351,6 @@ namespace Ayala_Interface_dotNet.ClassCon
 
         public void ComputeDailySales(int strTerminal)
         {
-
             //BeginOr, EndOR, BeginInv, EndInv
             RMQueries("Select MIN(bill_no), MAX(bill_no) from SLS" + repMonth + repYear + ".DBF where session_no =" + sessNo + " and settle_stn =" + strTerminal);
             bill_start = Convert.ToInt16(ReturnData(rdr[0].ToString()));
@@ -364,7 +365,7 @@ namespace Ayala_Interface_dotNet.ClassCon
             dbDateStart = strDate.ToString("d");
                     
             //TotalVat
-            RMQueries("SELECT SUM(a.Tax_Amt) FROM TAX" + repMonth + repYear + ".DBF a LEFT JOIN SLS" + repMonth + repYear + " b ON b.Bill_No = a.Bill_No WHERE b.Pay_Type <> 5 AND  b.Session_no = " + sessNo + " AND a.Tax_No = " + primaryVAT + " OR a.Tax_No = " + secondaryVAT + " AND b.Settle_stn =" + strTerminal);
+            RMQueries("SELECT SUM(a.Tax_Amt) FROM TAX" + repMonth + repYear + ".DBF a LEFT JOIN SLS" + repMonth + repYear + " b ON b.Bill_No = a.Bill_No WHERE b.Session_no = " + sessNo + " AND b.Settle_stn =" + strTerminal + " AND b.Pay_Type <> 5  AND a.Tax_No = " + primaryVAT + " OR a.Tax_No = " + secondaryVAT ); 
             dbTotalVat = ReturnData(rdr[0].ToString());
 
             //Total Discount
@@ -414,7 +415,7 @@ namespace Ayala_Interface_dotNet.ClassCon
 
             //getServiceCharge
             //Auto Grat
-            RMQueries("SELECT sum(auto_grat) from SLS" + repMonth + repYear + ".DBF WHERE Session_No = " + sessNo + " AND Pay_type <> 5 AND Settle_stn =" + strTerminal);
+            RMQueries("SELECT sum(auto_grat) from SLS" + repMonth + repYear + ".DBF WHERE Session_No = " + sessNo + "  AND Settle_stn =" + strTerminal + " AND Pay_type <> 5");
             dbServiceCharge = ReturnData(rdr[0].ToString());
 
             //Tax table
@@ -434,11 +435,11 @@ namespace Ayala_Interface_dotNet.ClassCon
             dbNoTaxSales = ReturnData(rdr[0].ToString());
 
             //GetLocalTax
-            RMQueries("SELECT SUM(a.Tax_Amt) FROM TAX" + repMonth + repYear + ".DBF a LEFT JOIN SLS" + repMonth + repYear + " b ON b.Bill_No = a.Bill_No WHERE b.Pay_Type <> 5 AND  b.Session_no = " + sessNo + " AND a.Tax_No = " + primaryOthers1 + " OR a.Tax_No = " + secondaryOthers1 + " AND b.Settle_stn =" + strTerminal);
+            RMQueries("SELECT SUM(a.Tax_Amt) FROM TAX" + repMonth + repYear + ".DBF a LEFT JOIN SLS" + repMonth + repYear + " b ON b.Bill_No = a.Bill_No WHERE b.Pay_Type <> 5  AND  b.Session_no = " + sessNo + " AND a.Tax_No = " + primaryOthers1 + " OR a.Tax_No = " + secondaryOthers1 + " AND b.Settle_stn =" + strTerminal + "");
             dbLocalTax = ReturnData(rdr[0].ToString());
-
+            
             //getTotalOthers
-            RMQueries("SELECT SUM(People_no) FROM SLS" + repMonth + repYear + ".DBF WHERE Session_no = " + sessNo + " AND Pay_type <> 5 and Settle_stn = " + strTerminal);
+            RMQueries("SELECT SUM(People_no) FROM SLS" + repMonth + repYear + ".DBF WHERE Session_no = " + sessNo + " and Settle_stn = " + strTerminal + "  AND Pay_type <> 5");
             dbTotalOthers = ReturnData(rdr[0].ToString());
 
             //getTotalTransaction
@@ -464,7 +465,7 @@ namespace Ayala_Interface_dotNet.ClassCon
             {
                 Queries("INSERT INTO tblGTValues (sessionNo,TerminalID,GTValues) values(" + sessNo + "," + strTerminal + "," + dbNewGT + ")");
             }
-                        
+
             //Generate DBF File
             GenerateDailyDBFFile(dbfFileName);
             //Generate Textfile
@@ -535,6 +536,7 @@ namespace Ayala_Interface_dotNet.ClassCon
             string destFile = Path.Combine(ayalaFolder + "\\" + strDate.ToString("yyyy"), dailyDBFFileName);
             File.Copy(sourceFile, destFile, true);
         }
+
         #endregion
 
         #region "Daily Reports"
@@ -575,5 +577,6 @@ namespace Ayala_Interface_dotNet.ClassCon
         }
 
         #endregion
+
     }
 }
