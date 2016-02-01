@@ -92,6 +92,7 @@
             this.toolSession.Size = new System.Drawing.Size(58, 39);
             this.toolSession.Text = "Session";
             this.toolSession.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.toolSession.Click += new System.EventHandler(this.toolSession_Click);
             // 
             // toolReprocess
             // 
