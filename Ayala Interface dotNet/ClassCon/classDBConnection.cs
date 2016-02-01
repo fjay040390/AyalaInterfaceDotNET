@@ -118,7 +118,6 @@ namespace Ayala_Interface_dotNet.ClassCon
 
          public void RMQueries(string sql)
          {
-             //rmConnect();
              //Fire Query
              cmd = new OleDbCommand(sql, rmCon);
              rdr = cmd.ExecuteReader();

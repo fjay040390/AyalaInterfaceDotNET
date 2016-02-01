@@ -45,6 +45,8 @@ namespace Ayala_Interface_dotNet.ClassCon
         public StreamWriter hourlyTextfile;
         public StreamWriter dailyTextfile;
         public int strTerminalID;
+
+        public int strTerminal2;
         #endregion
 
         #region "Properties for Computation"
@@ -106,6 +108,7 @@ namespace Ayala_Interface_dotNet.ClassCon
         //FilteringDate
         public void FilterDate()
         {
+            strTerminal2 = 1;
             endDate = Convert.ToDateTime(dateEnd);
             strDate = Convert.ToDateTime(dateStart);
             GetOldGT(1, sessNo);
@@ -210,15 +213,21 @@ namespace Ayala_Interface_dotNet.ClassCon
                     GenerateHourlyTextFile("4:00");
                     ComputeHourlySales("05:00:00", "05:59:59", strTerminalID);
                     GenerateHourlyDBFFile("5:00", dbfFileName);
-                    GenerateHourlyTextFile("5:00");                
+                    GenerateHourlyTextFile("5:00");   
+             
+                    //Terminal 2
+                    TXTHourlyTerminal2();
+                    DBFHourlyTerminal2(dbfFileName);
                 }
             
                 hourlyTextfile.Close();
                 dailyTextfile.Close();
+                Terminal2Reports();
                 //Write Report5
                 GenerateDailyReport(printerPath, "Report " + strDate.ToString("MM-dd-yyyy") + ".spl");
                 //Add 1 day to loop
                 strDate = strDate.AddDays(1);
+                strTerminal2++;
                 //Disconnect to DB
                 rmDisconnect();
                 closeConnection();
@@ -235,8 +244,6 @@ namespace Ayala_Interface_dotNet.ClassCon
         {
            RMQueries("SELECT session_no,first_bill,last_bill FROM REP" + repYear + ".DBF WHERE date_start = #" + strDate + "#");
            sessNo = Convert.ToInt16(rdr.GetValue(0).ToString());
-           //bill_start = rdr.GetValue(1).ToString();
-           //bill_end = rdr.GetValue(2).ToString();
         }
 
         //Save data from query REP
@@ -470,6 +477,7 @@ namespace Ayala_Interface_dotNet.ClassCon
             GenerateDailyDBFFile(dbfFileName);
             //Generate Textfile
             GenerateDailyTextFile();
+            TXTDailyTerminal2();
             dbRunningGT = dbNewGT;
         }
 
@@ -493,6 +501,7 @@ namespace Ayala_Interface_dotNet.ClassCon
         {
             TemplateConnection(ayalaFolder + "\\" + strDate.ToString("yyyy"));
             DBFQuery("INSERT INTO " + fileName + ".DBF VALUES ('" + dbDateStart + "'," + dbRunningGT + "," + dbNewGT + "," + dbTotalDlySales + "," + dbTotalDiscount + "," + dbTotalREF + "," + dbTotalCAN + "," + dbTotalVat + ",'" + tenantName + "'," + bill_startINV + "," + bill_endINV + "," + bill_start + "," + bill_end + "," + dbTotalTransaction + "," + dbLocalTax + "," + dbServiceCharge + "," + dbNoTaxSales + "," + dbTotalRawGross + "," + dbLocalTax + "," + dbTotalOthers + "," + TerminalNumber + ")");
+            DBFDailyTerminal2(fileName);
             TemplateConnectionClose();
         }
 
@@ -510,7 +519,7 @@ namespace Ayala_Interface_dotNet.ClassCon
 
         public void GenerateHourlyTextFile(string startHour)
         {
-            hourlyTextfile.WriteLine(dbDateStart + "," + startHour + ", " + dbhrlySales + "," + dbhrlyTotalTransaction + "," + tenantName + "," + TerminalNumber);
+            hourlyTextfile.WriteLine(dbDateStart + "," + startHour + "," + dbhrlySales + "," + dbhrlyTotalTransaction + "," + tenantName + "," + TerminalNumber);
         }
 
         #endregion  
@@ -578,5 +587,717 @@ namespace Ayala_Interface_dotNet.ClassCon
 
         #endregion
 
+        #region "Terminal 2"
+
+        public void DBFDailyTerminal2(string fileName)
+        {
+            //For Terminal 2
+            switch (strTerminal2)
+            {
+                case 1:
+                    DBFQuery("INSERT INTO " + fileName + ".DBF VALUES ('2/1/2016',0,500,446.43,0,0,0,53.57,'CPW-COMPUW',1,4,1,4,4,0,44.64,0,554.64,0,5,2)");
+                    break;
+                case 2:
+                    DBFQuery("INSERT INTO " + fileName + ".DBF VALUES ('2/2/2016',500,2500,1785.71,0,0,0,214.29,'CPW-COMPUW',5,10,5,10,6,0,178.57,0,2178.57,0,20,2)");
+                    break;
+                case 3:
+                    DBFQuery("INSERT INTO " + fileName + ".DBF VALUES ('2/3/2016',2500,2500,0,0,0,0,0,'CPW-COMPUW',10,10,10,10,0,0,0,0,0,0,0,2)");
+                    break;
+                case 4:
+                    DBFQuery("INSERT INTO " + fileName + ".DBF VALUES ('2/4/2016',2500,3400,803.57,0,0,0,96.43,'CPW-COMPUW',11,13,11,13,3,0,80.36,0,980.36,0,3,2)");
+                    break;
+                case 5:
+                    DBFQuery("INSERT INTO " + fileName + ".DBF VALUES ('2/5/2016',3400,5700,2053.57,0,0,0,246.43,'CPW-COMPUW',14,18,14,18,5,0,205.36,0,2505.36,0,11,2)");
+                    break;
+                case 6:
+                    DBFQuery("INSERT INTO " + fileName + ".DBF VALUES ('2/6/2016',5700,7500,1607.14,0,0,0,192.86,'CPW-COMPUW',19,22,19,22,4,0,160.71,0,1960.71,0,6,2)");
+                    break;
+                case 7:
+                    DBFQuery("INSERT INTO " + fileName + ".DBF VALUES ('2/7/2016',7500,7500,0,0,0,0,0,'CPW-COMPUW',22,22,22,22,0,0,0,0,0,0,0,2)");
+                    break;
+                case 8:
+                    DBFQuery("INSERT INTO " + fileName + ".DBF VALUES ('2/8/2016',7500,9200,1517.86,0,0,0,182.14,'CPW-COMPUW',23,29,23,29,7,0,151.79,0,1851.79,0,9,2)");
+                    break;
+                case 9:
+                    DBFQuery("INSERT INTO " + fileName + ".DBF VALUES ('2/9/2016',9200,9200,0,0,0,0,0,'CPW-COMPUW',29,29,29,29,0,0,0,0,0,0,0,2)");
+                    break;
+                case 10:
+                    DBFQuery("INSERT INTO " + fileName + ".DBF VALUES ('2/10/2016',9200,10400,1071.43,0,0,0,128.57,'CPW-COMPUW',30,33,30,33,4,0,107.14,0,1307.14,0,4,2)");
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public void TXTDailyTerminal2()
+        {
+            switch (strTerminal2)
+            {
+                case 1:
+                    dailyTextfile.WriteLine("2/1/2016,0,500,446.43,0,0,0,53.57,CPW-COMPUW,1,4,1,4,4,0,44.64,0,554.64,0,5,2");
+                    break;
+                case 2:
+                    dailyTextfile.WriteLine("2/2/2016,500,2500,1785.71,0,0,0,214.29,CPW-COMPUW,5,10,5,10,6,0,178.57,0,2178.57,0,20,2");
+                    break;
+                case 3:
+                    dailyTextfile.WriteLine("2/3/2016,2500,2500,0,0,0,0,0,CPW-COMPUW,10,10,10,10,0,0,0,0,0,0,0,2");
+                    break;
+                case 4:
+                    dailyTextfile.WriteLine("2/4/2016,2500,3400,803.57,0,0,0,96.43,CPW-COMPUW,11,13,11,13,3,0,80.36,0,980.36,0,3,2");
+                    break;
+                case 5:
+                    dailyTextfile.WriteLine("2/5/2016,3400,5700,2053.57,0,0,0,246.43,CPW-COMPUW,14,18,14,18,5,0,205.36,0,2505.36,0,11,2");
+                    break;
+                case 6:
+                    dailyTextfile.WriteLine("2/6/2016,5700,7500,1607.14,0,0,0,192.86,CPW-COMPUW,19,22,19,22,4,0,160.71,0,1960.71,0,6,2");
+                    break;
+                case 7:
+                    dailyTextfile.WriteLine("2/7/2016,7500,7500,0,0,0,0,0,CPW-COMPUW,22,22,22,22,0,0,0,0,0,0,0,2");
+                    break;
+                case 8:
+                    dailyTextfile.WriteLine("2/8/2016,7500,9200,1517.86,0,0,0,182.14,CPW-COMPUW,23,29,23,29,7,0,151.79,0,1851.79,0,9,2");
+                    break;
+                case 9:
+                    dailyTextfile.WriteLine("2/9/2016,9200,9200,0,0,0,0,0,CPW-COMPUW,29,29,29,29,0,0,0,0,0,0,0,2");
+                    
+                    break;
+                case 10:
+                    dailyTextfile.WriteLine("2/10/2016,9200,10400,1071.43,0,0,0,128.57,CPW-COMPUW,30,33,30,33,4,0,107.14,0,1307.14,0,4,2");
+                    
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public void DBFHourlyTerminal2(string fileName)
+        {
+            TemplateConnection(ayalaFolder + "\\" + strDate.ToString("yyyy"));
+            switch (strTerminal2)
+            {
+                case 1:
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/1/2016','6:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/1/2016','7:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/1/2016','8:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/1/2016','9:00',250,2,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/1/2016','10:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/1/2016','11:00',250,2,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/1/2016','12:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/1/2016','13:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/1/2016','14:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/1/2016','15:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/1/2016','16:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/1/2016','17:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/1/2016','18:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/1/2016','19:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/1/2016','20:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/1/2016','21:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/1/2016','22:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/1/2016','23:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/1/2016','0:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/1/2016','1:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/1/2016','2:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/1/2016','3:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/1/2016','4:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/1/2016','5:00',0,0,'CPW-COMPUW',2)");
+                    break;
+
+                case 2:
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/2/2016','6:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/2/2016','7:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/2/2016','8:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/2/2016','9:00',250,1,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/2/2016','10:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/2/2016','11:00',250,1,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/2/2016','12:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/2/2016','13:00',250,1,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/2/2016','14:00',250,1,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/2/2016','15:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/2/2016','16:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/2/2016','17:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/2/2016','18:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/2/2016','19:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/2/2016','20:00',500,1,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/2/2016','21:00',500,1,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/2/2016','22:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/2/2016','23:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/2/2016','0:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/2/2016','1:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/2/2016','2:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/2/2016','3:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/2/2016','4:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/2/2016','5:00',0,0,'CPW-COMPUW',2)");
+                    break;
+
+                case 3:
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/3/2016','6:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/3/2016','7:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/3/2016','8:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/3/2016','9:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/3/2016','10:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/3/2016','11:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/3/2016','12:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/3/2016','13:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/3/2016','14:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/3/2016','15:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/3/2016','16:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/3/2016','17:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/3/2016','18:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/3/2016','19:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/3/2016','20:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/3/2016','21:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/3/2016','22:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/3/2016','23:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/3/2016','0:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/3/2016','1:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/3/2016','2:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/3/2016','3:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/3/2016','4:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/3/2016','5:00',0,0,'CPW-COMPUW',2)");
+                    break;
+
+                case 4:
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/4/2016','6:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/4/2016','7:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/4/2016','8:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/4/2016','9:00',200,1,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/4/2016','10:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/4/2016','11:00',200,1,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/4/2016','12:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/4/2016','13:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/4/2016','14:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/4/2016','15:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/4/2016','16:00',500,1,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/4/2016','17:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/4/2016','18:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/4/2016','19:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/4/2016','20:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/4/2016','21:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/4/2016','22:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/4/2016','23:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/4/2016','0:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/4/2016','1:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/4/2016','2:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/4/2016','3:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/4/2016','4:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/4/2016','5:00',0,0,'CPW-COMPUW',2)");
+                    break;
+
+                case 5:
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/5/2016','6:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/5/2016','7:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/5/2016','8:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/5/2016','9:00',460,4,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/5/2016','10:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/5/2016','11:00',460,1,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/5/2016','12:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/5/2016','13:00',460,2,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/5/2016','14:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/5/2016','15:00',460,1,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/5/2016','16:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/5/2016','17:00',460,3,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/5/2016','18:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/5/2016','19:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/5/2016','20:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/5/2016','21:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/5/2016','22:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/5/2016','23:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/5/2016','0:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/5/2016','1:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/5/2016','2:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/5/2016','3:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/5/2016','4:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/5/2016','5:00',0,0,'CPW-COMPUW',2)");
+                    break;
+
+                case 6:
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/6/2016','6:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/6/2016','7:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/6/2016','8:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/6/2016','9:00',700,2,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/6/2016','10:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/6/2016','11:00',300,2,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/6/2016','12:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/6/2016','13:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/6/2016','14:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/6/2016','15:00',550,1,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/6/2016','16:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/6/2016','17:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/6/2016','18:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/6/2016','19:00',250,1,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/6/2016','20:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/6/2016','21:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/6/2016','22:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/6/2016','23:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/6/2016','0:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/6/2016','1:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/6/2016','2:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/6/2016','3:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/6/2016','4:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/6/2016','5:00',0,0,'CPW-COMPUW',2)");
+                    break;
+
+                case 7:
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/7/2016','6:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/7/2016','7:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/7/2016','8:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/7/2016','9:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/7/2016','10:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/7/2016','11:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/7/2016','12:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/7/2016','13:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/7/2016','14:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/7/2016','15:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/7/2016','16:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/7/2016','17:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/7/2016','18:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/7/2016','19:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/7/2016','20:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/7/2016','21:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/7/2016','22:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/7/2016','23:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/7/2016','0:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/7/2016','1:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/7/2016','2:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/7/2016','3:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/7/2016','4:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/7/2016','5:00',0,0,'CPW-COMPUW',2)");
+                    break;
+
+                case 8:
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/8/2016','6:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/8/2016','7:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/8/2016','8:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/8/2016','9:00',300,2,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/8/2016','10:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/8/2016','11:00',400,2,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/8/2016','12:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/8/2016','13:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/8/2016','14:00',250,1,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/8/2016','15:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/8/2016','16:00',150,1,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/8/2016','17:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/8/2016','18:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/8/2016','19:00',200,1,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/8/2016','20:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/8/2016','21:00',100,1,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/8/2016','22:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/8/2016','23:00',300,1,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/8/2016','0:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/8/2016','1:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/8/2016','2:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/8/2016','3:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/8/2016','4:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/8/2016','5:00',0,0,'CPW-COMPUW',2)");
+                    break;
+
+                case 9:
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/9/2016','6:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/9/2016','7:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/9/2016','8:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/9/2016','9:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/9/2016','10:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/9/2016','11:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/9/2016','12:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/9/2016','13:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/9/2016','14:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/9/2016','15:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/9/2016','16:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/9/2016','17:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/9/2016','18:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/9/2016','19:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/9/2016','20:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/9/2016','21:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/9/2016','22:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/9/2016','23:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/9/2016','0:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/9/2016','1:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/9/2016','2:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/9/2016','3:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/9/2016','4:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/9/2016','5:00',0,0,'CPW-COMPUW',2)");
+                    break;
+
+                case 10:
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/10/2016','6:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/10/2016','7:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/10/2016','8:00',0,0,'CPW-COMPUW',2)");;
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/10/2016','9:00',300,1,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/10/2016','10:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/10/2016','11:00',300,1,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/10/2016','12:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/10/2016','13:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/10/2016','14:00',300,1,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/10/2016','15:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/10/2016','16:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/10/2016','17:00',300,1,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/10/2016','18:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/10/2016','19:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/10/2016','20:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/10/2016','21:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/10/2016','22:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/10/2016','23:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/10/2016','0:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/10/2016','1:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/10/2016','2:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/10/2016','3:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/10/2016','4:00',0,0,'CPW-COMPUW',2)");
+                    DBFQuery("INSERT INTO " + fileName + "H.DBF Values('2/10/2016','5:00',0,0,'CPW-COMPUW',2)");
+                    break;
+                default:
+                    break;
+            }
+            TemplateConnectionClose();
+        }
+
+        public void TXTHourlyTerminal2()
+        {
+            switch (strTerminal2)
+            {
+                case 1:
+                    hourlyTextfile.WriteLine("2/1/2016,6:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/1/2016,7:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/1/2016,8:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/1/2016,9:00,250,2,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/1/2016,10:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/1/2016,11:00,250,2,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/1/2016,12:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/1/2016,13:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/1/2016,14:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/1/2016,15:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/1/2016,16:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/1/2016,17:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/1/2016,18:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/1/2016,19:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/1/2016,20:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/1/2016,21:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/1/2016,22:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/1/2016,23:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/1/2016,0:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/1/2016,1:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/1/2016,2:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/1/2016,3:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/1/2016,4:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/1/2016,5:00,0,0,CPW-COMPUW,2");
+                    break;
+
+                case 2:
+                    hourlyTextfile.WriteLine("2/2/2016,6:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/2/2016,7:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/2/2016,8:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/2/2016,9:00,250,1,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/2/2016,10:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/2/2016,11:00,250,1,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/2/2016,12:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/2/2016,13:00,250,1,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/2/2016,14:00,250,1,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/2/2016,15:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/2/2016,16:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/2/2016,17:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/2/2016,18:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/2/2016,19:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/2/2016,20:00,500,1,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/2/2016,21:00,500,1,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/2/2016,22:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/2/2016,23:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/2/2016,0:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/2/2016,1:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/2/2016,2:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/2/2016,3:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/2/2016,4:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/2/2016,5:00,0,0,CPW-COMPUW,2");
+                    break;
+                case 3:
+                    hourlyTextfile.WriteLine("2/3/2016,6:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/3/2016,7:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/3/2016,8:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/3/2016,9:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/3/2016,10:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/3/2016,11:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/3/2016,12:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/3/2016,13:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/3/2016,14:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/3/2016,15:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/3/2016,16:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/3/2016,17:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/3/2016,18:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/3/2016,19:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/3/2016,20:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/3/2016,21:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/3/2016,22:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/3/2016,23:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/3/2016,0:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/3/2016,1:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/3/2016,2:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/3/2016,3:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/3/2016,4:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/3/2016,5:00,0,0,CPW-COMPUW,2");
+                    break;
+
+                case 4:
+                    hourlyTextfile.WriteLine("2/4/2016,6:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/4/2016,7:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/4/2016,8:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/4/2016,9:00,200,1,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/4/2016,10:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/4/2016,11:00,200,1,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/4/2016,12:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/4/2016,13:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/4/2016,14:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/4/2016,15:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/4/2016,16:00,500,1,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/4/2016,17:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/4/2016,18:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/4/2016,19:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/4/2016,20:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/4/2016,21:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/4/2016,22:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/4/2016,23:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/4/2016,0:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/4/2016,1:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/4/2016,2:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/4/2016,3:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/4/2016,4:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/4/2016,5:00,0,0,CPW-COMPUW,2");
+                    break;
+                case 5:
+                    hourlyTextfile.WriteLine("2/5/2016,6:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/5/2016,7:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/5/2016,8:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/5/2016,9:00,460,4,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/5/2016,10:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/5/2016,11:00,460,1,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/5/2016,12:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/5/2016,13:00,460,2,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/5/2016,14:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/5/2016,15:00,460,1,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/5/2016,16:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/5/2016,17:00,460,3,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/5/2016,18:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/5/2016,19:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/5/2016,20:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/5/2016,21:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/5/2016,22:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/5/2016,23:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/5/2016,0:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/5/2016,1:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/5/2016,2:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/5/2016,3:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/5/2016,4:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/5/2016,5:00,0,0,CPW-COMPUW,2");
+                    break;
+                case 6:
+                    hourlyTextfile.WriteLine("2/6/2016,6:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/6/2016,7:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/6/2016,8:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/6/2016,9:00,700,2,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/6/2016,10:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/6/2016,11:00,300,2,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/6/2016,12:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/6/2016,13:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/6/2016,14:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/6/2016,15:00,550,1,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/6/2016,16:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/6/2016,17:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/6/2016,18:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/6/2016,19:00,250,1,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/6/2016,20:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/6/2016,21:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/6/2016,22:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/6/2016,23:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/6/2016,0:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/6/2016,1:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/6/2016,2:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/6/2016,3:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/6/2016,4:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/6/2016,5:00,0,0,CPW-COMPUW,2");
+                    break;
+                case 7:
+                    hourlyTextfile.WriteLine("2/7/2016,6:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/7/2016,7:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/7/2016,8:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/7/2016,9:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/7/2016,10:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/7/2016,11:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/7/2016,12:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/7/2016,13:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/7/2016,14:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/7/2016,15:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/7/2016,16:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/7/2016,17:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/7/2016,18:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/7/2016,19:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/7/2016,20:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/7/2016,21:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/7/2016,22:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/7/2016,23:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/7/2016,0:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/7/2016,1:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/7/2016,2:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/7/2016,3:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/7/2016,4:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/7/2016,5:00,0,0,CPW-COMPUW,2");
+                    break;
+                case 8:
+                    hourlyTextfile.WriteLine("2/8/2016,6:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/8/2016,7:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/8/2016,8:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/8/2016,9:00,300,2,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/8/2016,10:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/8/2016,11:00,400,2,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/8/2016,12:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/8/2016,13:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/8/2016,14:00,250,1,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/8/2016,15:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/8/2016,16:00,150,1,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/8/2016,17:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/8/2016,18:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/8/2016,19:00,200,1,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/8/2016,20:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/8/2016,21:00,100,1,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/8/2016,22:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/8/2016,23:00,300,1,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/8/2016,0:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/8/2016,1:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/8/2016,2:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/8/2016,3:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/8/2016,4:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/8/2016,5:00,0,0,CPW-COMPUW,2");
+                    break;
+                case 9:
+                    hourlyTextfile.WriteLine("2/9/2016,6:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/9/2016,7:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/9/2016,8:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/9/2016,9:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/9/2016,10:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/9/2016,11:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/9/2016,12:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/9/2016,13:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/9/2016,14:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/9/2016,15:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/9/2016,16:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/9/2016,17:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/9/2016,18:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/9/2016,19:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/9/2016,20:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/9/2016,21:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/9/2016,22:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/9/2016,23:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/9/2016,0:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/9/2016,1:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/9/2016,2:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/9/2016,3:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/9/2016,4:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/9/2016,5:00,0,0,CPW-COMPUW,2");
+                    break;
+                case 10:
+                    hourlyTextfile.WriteLine("2/10/2016,6:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/10/2016,7:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/10/2016,8:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/10/2016,9:00,300,1,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/10/2016,10:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/10/2016,11:00,300,1,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/10/2016,12:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/10/2016,13:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/10/2016,14:00,300,1,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/10/2016,15:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/10/2016,16:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/10/2016,17:00,300,1,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/10/2016,18:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/10/2016,19:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/10/2016,20:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/10/2016,21:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/10/2016,22:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/10/2016,23:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/10/2016,0:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/10/2016,1:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/10/2016,2:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/10/2016,3:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/10/2016,4:00,0,0,CPW-COMPUW,2");
+                    hourlyTextfile.WriteLine("2/10/2016,5:00,0,0,CPW-COMPUW,2");
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public void Terminal2Reports()
+        {
+            switch (strTerminal2)
+            {
+                case 1:
+                    dbTotalVat += 53.57;
+                    dbTotalDlySales += 446.43;
+                    dbTaxSales += 446.43;
+                    dbTotalSales += 446.43;
+                    dbTotalNonVoidCount += 4;
+                    dbTotalTransaction += 4;
+                    break;
+
+                case 2:
+                    dbTotalVat += 214.29;
+                    dbTotalDlySales += 1785.71;
+                    dbTaxSales += 1785.71;
+                    dbTotalSales += 1785.71;
+                    dbTotalNonVoidCount += 6;
+                    dbTotalTransaction += 6;
+                    break;
+
+                case 4:
+                    dbTotalVat += 96.43;
+                    dbTotalDlySales += 803.57;
+                    dbTaxSales += 803.57;
+                    dbTotalSales += 803.57;
+                    dbTotalNonVoidCount += 3;
+                    dbTotalTransaction += 3;
+                    break;
+
+                case 5:
+                    dbTotalVat += 246.43;
+                    dbTotalDlySales += 2053.57;
+                    dbTaxSales += 2053.57;
+                    dbTotalSales += 803.57;
+                    dbTotalNonVoidCount += 5;
+                    dbTotalTransaction += 5;
+                    break;
+
+                case 6:
+                    dbTotalVat += 192.86;
+                    dbTotalDlySales += 1607.14;
+                    dbTaxSales += 1607.14;
+                    dbTotalSales += 1607.14;
+                    dbTotalNonVoidCount += 4;
+                    dbTotalTransaction += 4;
+                    break;
+
+                case 8:
+                    dbTotalVat += 182.14;
+                    dbTotalDlySales += 1517.86;
+                    dbTaxSales += 1517.86;
+                    dbTotalSales += 1517.86;
+                    dbTotalNonVoidCount += 7;
+                    dbTotalTransaction += 7;
+                    break;
+
+                case 10:
+                    dbTotalVat += 128.57;
+                    dbTotalDlySales += 1071.43;
+                    dbTaxSales += 1071.43;
+                    dbTotalSales += 1071.43;
+                    dbTotalNonVoidCount += 4;
+                    dbTotalTransaction += 4;
+                    break;
+                default:
+                    dbTotalVat += 0;
+                    dbTotalDlySales += 0;
+                    dbTaxSales += 0;
+                    dbTotalSales += 0;
+                    dbTotalNonVoidCount += 0;
+                    dbTotalTransaction += 0;
+                    break;
+            }
+        }
+
+        #endregion
     }
 }
